@@ -2,12 +2,51 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
 import { Font } from 'expo';
+import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import AppIntroScreenContainer from './screens/AppIntroScreenContainer';
 import LoadingScreen from './components/LoadingScreen';
+import CaseCard from './components/CaseCard';
+import { TabNavigator, StackNavigator, TabBarBottom } from 'react-navigation';
+import HomeScreenContainer from './screens/HomeScreenContainer';
+import SavedScreenContainer from './screens/SavedScreenContainer';
+import MapScreenContainer from './screens/MapScreenContainer';
+import RandomScreenContainer from './screens/RandomScreenContainer';
+import ProfileScreenContainer from './screens/ProfileScreenContainer';
+
+const MainNavigator = TabNavigator(
+  {
+    homeContainer: {
+      screen: StackNavigator({ home: { screen: HomeScreenContainer } })
+    },
+    savedContainer: {
+      screen: StackNavigator({ home: { screen: SavedScreenContainer } })
+    },
+    mapContainer: {
+      screen: StackNavigator({ map: { screen: MapScreenContainer } })
+    },
+    randomContainer: {
+      screen: StackNavigator({ random: { screen: RandomScreenContainer } })
+    },
+    profileContainer: {
+      screen: StackNavigator({ profile: { screen: ProfileScreenContainer } })
+    }
+  },
+  {
+    lazy: true,
+    tabBarOptions: {
+      activeTintColor: '#4BA2AC',
+      labelStyle: { fontSize: 11 }
+    },
+    // For Android compatible
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
+    animationEnabled: false
+  }
+);
 
 export default class App extends React.Component {
   state = {
-    assetLoaded: false
+    assetLoaded: false,
   };
 
   componentDidMount = async () => {
@@ -22,7 +61,10 @@ export default class App extends React.Component {
     if (this.state.assetLoaded) {
       return (
         <Provider store={store}>
-          <AppIntroScreenContainer />
+          <View style={{ flex: 1 }}>
+            <StatusBar barStyle='light-content'/>
+            <MainNavigator />
+          </View>
         </Provider>
       );
     } else {
@@ -30,3 +72,4 @@ export default class App extends React.Component {
     }
   }
 }
+
