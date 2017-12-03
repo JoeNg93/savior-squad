@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 class RandomScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Random',
-    headerStyle: { backgroundColor: '#4BA2AC' },
+    headerStyle: { backgroundColor: '#50C9BA' },
     headerTitleStyle: { color: 'white' },
     tabBarIcon: ({ tintColor }) => (
       <Icon name='wheelchair-alt' type='font-awesome' color={tintColor}/>

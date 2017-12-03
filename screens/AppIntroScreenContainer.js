@@ -5,7 +5,7 @@ class AppIntroScreenContainer extends Component {
   slides = [
     {
       key: 'screen-1',
-      backgroundColor: '#4BA2AC',
+      backgroundColor: '#2C3E50',
       iconName: 'globe',
       description:
         '"Please find me asap!", Robert said\n' +
@@ -22,7 +22,7 @@ class AppIntroScreenContainer extends Component {
     },
     {
       key: 'screen-3',
-      backgroundColor: '#4BA2AC',
+      backgroundColor: '#02C39A',
       iconName: 'vcard-o',
       description:
         'We have many cases about missing persons all around the world. You can follow those cases and, of course, posts your cases if you know someone is missing!',
@@ -30,8 +30,8 @@ class AppIntroScreenContainer extends Component {
     },
     {
       key: 'screen-4',
-      backgroundColor: '#4BA2AC',
       iconName: 'calendar',
+      backgroundColor: '#003459',
       description:
         'We also help to organize events related to missing people, such as massive finding! You can organize events for a person too!',
       heading: 'How?'

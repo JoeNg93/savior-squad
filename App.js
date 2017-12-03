@@ -34,7 +34,7 @@ const MainNavigator = TabNavigator(
   {
     lazy: true,
     tabBarOptions: {
-      activeTintColor: '#4BA2AC',
+      activeTintColor: '#50C9BA',
       labelStyle: { fontSize: 11 }
     },
     // For Android compatible

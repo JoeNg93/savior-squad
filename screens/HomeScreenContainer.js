@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native';
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Home',
-    headerStyle: { backgroundColor: '#4BA2AC' },
+    headerStyle: { backgroundColor: '#50C9BA' },
     headerTitleStyle: { color: 'white' },
     tabBarIcon: ({ tintColor }) => (
       <Icon name="home" type="font-awesome" color={tintColor} />

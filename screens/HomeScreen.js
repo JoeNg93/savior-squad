@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   leftTextStyle: {
     fontWeight: 'bold',
-    color: '#50C9BA'
+    color: '#4BA2AC'
   },
   sectionHeaderContainer: {
     flexDirection: 'row',

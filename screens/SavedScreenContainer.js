@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 class SavedScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Saved',
-    headerStyle: { backgroundColor: '#4BA2AC' },
+    headerStyle: { backgroundColor: '#50C9BA' },
     headerTitleStyle: { color: 'white' },
     tabBarIcon: ({ tintColor }) => (
       <Icon name='star' type='font-awesome' color={tintColor}/>
