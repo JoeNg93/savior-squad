@@ -4,4 +4,8 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
-export { viewportWidth, viewportHeight };
+const wp = percentage => Math.round(percentage * viewportWidth / 100);
+
+const hp = percentage => Math.round(percentage * viewportHeight / 100);
+
+export { viewportWidth, viewportHeight, wp, hp };
