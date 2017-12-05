@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "expo": "^23.0.0",
+    "firebase": "^4.7.0",
     "lodash": "^4.17.4",
     "nachos-ui": "^0.1.2",
     "prop-types": "^15.6.0",
