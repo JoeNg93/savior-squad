@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { Spinner } from 'nachos-ui';
 
 const LoadingScreen = ({ backgroundColor, loaderColor }) => {
   return (
     <View style={[styles.loader, { backgroundColor }]}>
-      <ActivityIndicator size="large" color={loaderColor} />
+      <Spinner color={loaderColor} duration={300} />
     </View>
   );
 };
@@ -16,8 +17,8 @@ LoadingScreen.propTypes = {
 };
 
 LoadingScreen.defaultProps = {
-  backgroundColor: '#4BA2AC',
-  loaderColor: 'white'
+  backgroundColor: 'white',
+  loaderColor: '#4BA2AC'
 };
 
 const styles = StyleSheet.create({
