@@ -15,6 +15,10 @@ AppIntroScreen.propTypes = {
   onDone: PropTypes.func
 };
 
+AppIntroScreen.defaultProps = {
+  onDone: () => {}
+};
+
 const renderItems = props => (
   <View style={[styles.container, { backgroundColor: props.backgroundColor }]}>
     <Icon name={props.iconName} color="white" type="font-awesome" size={250} />

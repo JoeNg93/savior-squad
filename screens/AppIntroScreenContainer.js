@@ -39,7 +39,12 @@ class AppIntroScreenContainer extends Component {
   ];
 
   render() {
-    return <AppIntroScreen slides={this.slides} onDone={() => {}} />;
+    return (
+      <AppIntroScreen
+        slides={this.slides}
+        onDone={() => this.props.navigation.navigate('loginContainer')}
+      />
+    );
   }
 }
 
