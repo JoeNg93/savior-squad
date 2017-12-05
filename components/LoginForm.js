@@ -19,13 +19,13 @@ const LoginForm = ({
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Username or Email"
+        placeholder="Email"
         placeholderTextColor="rgba(255,255,255,0.7)"
         keyboardType="email-address"
         autoCorrect={false}
         autoCapitalize="none"
         value={email}
-        onChangeText={email => onChangeEmailField(email)}
+        onChangeText={onChangeEmailField}
       />
       <TextInput
         style={styles.input}
@@ -33,7 +33,7 @@ const LoginForm = ({
         placeholderTextColor="rgba(255,255,255,0.7)"
         secureTextEntry
         value={password}
-        onChangeText={password => onChangePasswordField(password)}
+        onChangeText={onChangePasswordField}
       />
 
       <TouchableOpacity
