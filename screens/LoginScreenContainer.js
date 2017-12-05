@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { login, checkCredential } from '../actions/auth';
 
 class LoginScreenContainer extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: null
+  });
+
   state = {
     email: '',
     password: ''
@@ -20,6 +24,10 @@ class LoginScreenContainer extends Component {
     }
   };
 
+  onPressSignup = () => {
+    this.props.navigation.navigate('signup');
+    this.setState({ email: '', password: '' });
+  };
 
   render() {
     return (
@@ -29,6 +37,7 @@ class LoginScreenContainer extends Component {
         onPressLogin={this.onPressLogin}
         onChangePasswordField={this.onChangePasswordField}
         onChangeEmailField={this.onChangeEmailField}
+        onPressSignup={this.onPressSignup}
       />
     );
   }

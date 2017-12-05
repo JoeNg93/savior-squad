@@ -16,7 +16,8 @@ const LoginScreen = ({
   email,
   password,
   onChangePasswordField,
-  onChangeEmailField
+  onChangeEmailField,
+  onPressSignup
 }) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -31,6 +32,7 @@ const LoginScreen = ({
           onChangeEmailField={onChangeEmailField}
           onChangePasswordField={onChangePasswordField}
           onPressLogin={onPressLogin}
+          onPressSignup={onPressSignup}
         />
       </View>
       <View style={styles.containerSmall}>
@@ -60,13 +62,15 @@ LoginScreen.propTypes = {
   password: PropTypes.string.isRequired,
   onChangeEmailField: PropTypes.func,
   onChangePasswordField: PropTypes.func,
-  onPressLogin: PropTypes.func
+  onPressLogin: PropTypes.func,
+  onPressSignup: PropTypes.func
 };
 
 LoginScreen.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
-  onPressLogin: () => {}
+  onPressLogin: () => {},
+  onPressSignup: () => {}
 };
 
 const styles = StyleSheet.create({

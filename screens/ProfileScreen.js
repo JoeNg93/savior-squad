@@ -40,7 +40,7 @@ const settingList2 = [
   }
 ];
 
-const ProfileScreen = ({ onPressLogout }) => {
+const ProfileScreen = ({ onPressLogout, userInfo }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -50,7 +50,7 @@ const ProfileScreen = ({ onPressLogout }) => {
               roundAvatar
               avatar={{ uri: l.avatar_url }}
               key={i}
-              title={l.name}
+              title={userInfo.name}
               subtitle={l.subtitle}
               onPress={() => {}}
             />
@@ -83,11 +83,13 @@ const ProfileScreen = ({ onPressLogout }) => {
 };
 
 ProfileScreen.propTypes = {
-  onPressLogout: PropTypes.func
+  onPressLogout: PropTypes.func,
+  userInfo: PropTypes.object
 };
 
 ProfileScreen.defaultProps = {
-  onPressLogout: () => {}
+  onPressLogout: () => {},
+  userInfo: {}
 };
 
 const styles = StyleSheet.create({

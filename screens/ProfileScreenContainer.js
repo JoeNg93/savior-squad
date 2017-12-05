@@ -28,8 +28,18 @@ class ProfileScreenContainer extends Component {
   };
 
   render() {
-    return <ProfileScreen onPressLogout={this.onPressLogout} />;
+    console.log('Current user: ', this.props.currentUser);
+    return (
+      <ProfileScreen
+        onPressLogout={this.onPressLogout}
+        userInfo={this.props.currentUser}
+      />
+    );
   }
 }
 
-export default connect(null, { logout })(ProfileScreenContainer);
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser
+});
+
+export default connect(mapStateToProps, { logout })(ProfileScreenContainer);

@@ -13,7 +13,8 @@ const LoginForm = ({
   email,
   onChangeEmailField,
   password,
-  onChangePasswordField
+  onChangePasswordField,
+  onPressSignup
 }) => {
   return (
     <View style={styles.container}>
@@ -44,7 +45,7 @@ const LoginForm = ({
       </TouchableOpacity>
       <View style={styles.signupTextContainer}>
         <Text style={styles.signupText}>Dont have an account? </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressSignup}>
           <Text style={[styles.signupText, { color: 'rgba(0,0,255,0.4)' }]}>
             Sign up
           </Text>
@@ -59,13 +60,15 @@ LoginForm.propTypes = {
   password: PropTypes.string.isRequired,
   onChangeEmailField: PropTypes.func,
   onChangePasswordField: PropTypes.func,
-  onPressLogin: PropTypes.func
+  onPressLogin: PropTypes.func,
+  onPressSignup: PropTypes.func
 };
 
 LoginForm.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
-  onPressLogin: () => {}
+  onPressLogin: () => {},
+  onPressSignup: () => {}
 };
 
 const styles = StyleSheet.create({

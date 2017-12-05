@@ -13,12 +13,18 @@ import MapScreenContainer from './screens/MapScreenContainer';
 import RandomScreenContainer from './screens/RandomScreenContainer';
 import ProfileScreenContainer from './screens/ProfileScreenContainer';
 import LoginScreenContainer from './screens/LoginScreenContainer';
+import SignupScreenContainer from './screens/SignupScreenContainer';
 import firebaseConfig from './firebase_config';
 
 const MainNavigator = StackNavigator(
   {
     introContainer: { screen: AppIntroScreenContainer },
-    loginContainer: { screen: LoginScreenContainer },
+    loginContainer: {
+      screen: StackNavigator({
+        login: { screen: LoginScreenContainer },
+        signup: { screen: SignupScreenContainer }
+      })
+    },
     mainContainer: {
       screen: TabNavigator(
         {
@@ -82,7 +88,7 @@ export default class App extends React.Component {
       return (
         <Provider store={store}>
           <View style={{ flex: 1 }}>
-            <StatusBar barStyle='light-content'/>
+            <StatusBar barStyle="light-content" />
             <MainNavigator />
           </View>
         </Provider>
