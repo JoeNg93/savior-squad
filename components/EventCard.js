@@ -5,32 +5,43 @@ import { Icon } from 'react-native-elements';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
+const itemHorizontalMargin = 8;
+
 const EventCard = ({ eventInfo, onTapCard }) => {
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.cardContainer}>
       <View style={styles.imageContainer}>
         <Icon name='calendar' type='font-awesome' size={50} color='#f1f2f2'/>
-        <Text style={styles.header}>Find big Joe asap</Text>
+        <Text style={styles.header}>{eventInfo.name}</Text>
       </View>
       <View style={styles.textContainer}>
         <View style={styles.line}>
           <Icon type='font-awesome' name='map-marker' size={20}/>
-          <Text>{'  '}Oulu</Text>
+          <Text style={styles.eventInfoText}>{'  '}{eventInfo.loc.city}, {eventInfo.loc.country}</Text>
         </View>
         <View style={styles.line}>
           <Icon type='font-awesome' name='clock-o' size={20}/>
-          <Text>{' '}21 Dec - 10:00 AM</Text>
+          <Text style={styles.eventInfoText}>{' '}{eventInfo.date}, {eventInfo.time}</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
 
+EventCard.propTypes = {
+  eventInfo: PropTypes.object.isRequired,
+  opTapCard: PropTypes.func
+};
+
+EventCard.defaultProps = {
+  onTapCard: () => {}
+};
+
 const styles = StyleSheet.create({
   cardContainer: {
-    width: viewportWidth / 2,
-    height: 250,
-    borderWidth: 1,
+    width: viewportWidth / 2.2,
+    height: 225,
+    paddingRight: itemHorizontalMargin * 2
   },
   imageContainer: {
     flex: 4,
@@ -50,16 +61,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 5,
     alignItems: 'center'
+  },
+  eventInfoText: {
+    fontSize: 12
   }
 });
-
-EventCard.propTypes = {
-  eventInfo: PropTypes.object.isRequired,
-  opTapCard: PropTypes.func
-};
-
-EventCard.defaultProps = {
-  onTapCard: () => {}
-};
 
 export default EventCard;

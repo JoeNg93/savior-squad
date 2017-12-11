@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import HomeScreen from './HomeScreen';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { getAllCases } from '../actions/cases';
+import { getAllEvents } from '../actions/events';
+import { getCurrentLocation } from '../actions/locations';
+import _ from 'lodash';
+import LoadingScreen from '../components/LoadingScreen';
+import { objToArrIncludingKey } from '../utils/index';
+import geolib from 'geolib';
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -23,9 +31,41 @@ class HomeScreenContainer extends Component {
     tabBarLabel: 'Home'
   });
 
+  componentWillMount = () => {
+    this.props.getAllCases();
+    this.props.getAllEvents();
+    this.props.getCurrentLocation();
+  };
+
   render() {
-    return <HomeScreen />;
+    const { allCases, allEvents, currentUser } = this.props;
+    if (_.size(allCases) && _.size(allEvents) && currentUser.location) {
+      const casesAsArr = objToArrIncludingKey(allCases);
+      const eventsAsArr = objToArrIncludingKey(allEvents);
+      const nearestThings = _.sortBy([...casesAsArr, ...eventsAsArr], data => {
+        const { coord } = _.find(data, 'coord');
+        return geolib.getDistance(currentUser.location, coord);
+      });
+      return (
+        <HomeScreen
+          cases={casesAsArr}
+          events={eventsAsArr}
+          nearestThings={_.take(nearestThings, 5)}
+        />
+      );
+    }
+    return <LoadingScreen />;
   }
 }
 
-export default HomeScreenContainer;
+const mapStateToProps = state => ({
+  allCases: state.cases.allCases,
+  allEvents: state.events.allEvents,
+  currentUser: state.auth.currentUser
+});
+
+export default connect(mapStateToProps, {
+  getAllCases,
+  getAllEvents,
+  getCurrentLocation
+})(HomeScreenContainer);

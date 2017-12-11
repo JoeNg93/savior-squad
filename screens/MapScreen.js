@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MapView } from 'expo';
 import Slider from '../components/Slider';
 import PropTypes from 'prop-types';
-import CaseCard from '../components/CaseCard';
 import { Icon } from 'react-native-elements';
 
 const MapScreen = ({
@@ -11,9 +10,9 @@ const MapScreen = ({
   onLoadCarousel,
   onSlideToCard,
   renderItem,
-  items,
   initialRegion,
   data,
+  markers,
   onPressMarker
 }) => {
   return (
@@ -23,16 +22,28 @@ const MapScreen = ({
         initialRegion={initialRegion}
         ref={onLoadMap}
       >
-        {data.markers.map((marker, index) => {
+        {markers.map((coord, index) => {
           return (
-            <MapView.Marker key={index} coordinate={marker.coordinate}>
-              <TouchableOpacity style={styles.markerContainerStyle} onPress={() => onPressMarker(index) }>
-                <Icon
-                  name="user-secret"
-                  type="font-awesome"
-                  color="white"
-                  containerStyle={{ backgroundColor: '#4BA2AC' }}
-                />
+            <MapView.Marker key={index} coordinate={coord}>
+              <TouchableOpacity
+                style={styles.markerContainerStyle}
+                onPress={() => onPressMarker(index)}
+              >
+                {data[index].age ? (
+                  <Icon
+                    name="user-secret"
+                    type="font-awesome"
+                    color="white"
+                    containerStyle={{ backgroundColor: '#4BA2AC' }}
+                  />
+                ) : (
+                  <Icon
+                    name="calendar"
+                    type="font-awesome"
+                    color="white"
+                    containerStyle={{ backgroundColor: '#4BA2AC' }}
+                  />
+                )}
               </TouchableOpacity>
             </MapView.Marker>
           );
@@ -40,7 +51,7 @@ const MapScreen = ({
       </MapView>
       <View style={styles.cardSliderContainer}>
         <Slider
-          items={items}
+          items={data}
           onLoadCarousel={onLoadCarousel}
           renderItem={renderItem}
           inactiveSlideOpacity={0.7}
@@ -59,10 +70,10 @@ MapScreen.propTypes = {
   onLoadMap: PropTypes.func,
   onSlideToCard: PropTypes.func,
   renderItem: PropTypes.func.isRequired,
-  items: PropTypes.array.isRequired,
-  data: PropTypes.object,
+  data: PropTypes.array,
   initialRegion: PropTypes.object,
-  onPressMarker: PropTypes.func
+  onPressMarker: PropTypes.func,
+  markers: PropTypes.array
 };
 
 MapScreen.defaultProps = {

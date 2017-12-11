@@ -14,7 +14,8 @@ const SignupScreen = ({
   onChangePasswordField,
   onChangeConfirmPasswordField,
   onChangeNameField,
-  onChangeTelephoneNumberField
+  onChangeTelephoneNumberField,
+  isLoggingIn
 }) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -30,6 +31,7 @@ const SignupScreen = ({
         onChangeNameField={onChangeNameField}
         onChangeTelephoneNumberField={onChangeTelephoneNumberField}
         onClickSignup={onClickSignup}
+        isLoggingIn={isLoggingIn}
       />
     </KeyboardAvoidingView>
   );
@@ -46,7 +48,8 @@ SignupScreen.propTypes = {
   onChangePasswordField: PropTypes.func,
   onChangeConfirmPasswordField: PropTypes.func,
   onChangeNameField: PropTypes.func,
-  onChangeTelephoneNumberField: PropTypes.func
+  onChangeTelephoneNumberField: PropTypes.func,
+  isLoggingIn: PropTypes.bool
 };
 
 SignupScreen.defaultProps = {
@@ -55,7 +58,8 @@ SignupScreen.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
   onChangeNameField: () => {},
-  onChangeTelephoneNumberField: () => {}
+  onChangeTelephoneNumberField: () => {},
+  isLoggingIn: false
 };
 
 const styles = StyleSheet.create({

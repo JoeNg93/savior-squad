@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import MapScreen from './MapScreen';
 import { Icon } from 'react-native-elements';
 import CaseCard from '../components/CaseCard';
+import EventCard from '../components/EventCard';
+import { connect } from 'react-redux';
+import LoadingScreen from '../components/LoadingScreen';
+import { objToArrIncludingKey } from '../utils/index';
+import _ from 'lodash';
 
 class MapScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -14,77 +19,55 @@ class MapScreenContainer extends Component {
     tabBarLabel: 'Map'
   });
 
-  state = {
-    markers: [
+  onSlideToCard = index => {
+    this.map.animateToRegion(
       {
-        coordinate: {
-          latitude: 45.524548,
-          longitude: -122.6749817
-        },
-        title: 'Best Place',
-        description: 'This is the best place in Portland'
+        ...this.markers[index],
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02
       },
-      {
-        coordinate: {
-          latitude: 45.524698,
-          longitude: -122.6655507
-        },
-        title: 'Second Best Place',
-        description: 'This is the second best place in Portland'
-      },
-      {
-        coordinate: {
-          latitude: 45.5230786,
-          longitude: -122.6701034
-        },
-        title: 'Third Best Place',
-        description: 'This is the third best place in Portland'
-      },
-      {
-        coordinate: {
-          latitude: 45.521016,
-          longitude: -122.6561917
-        },
-        title: 'Fourth Best Place',
-        description: 'This is the fourth best place in Portland'
-      }
-    ],
-    region: {
-      latitude: 45.52220671242907,
-      longitude: -122.6653281029795,
-      latitudeDelta: 0.04864195044303443,
-      longitudeDelta: 0.040142817690068
-    }
+      500
+    );
   };
 
-  items = [0, 1, 2, 3];
-
-  onSlideToCard = (index) => {
-    this.map.animateToRegion({
-      ...this.state.markers[index].coordinate,
-      latitudeDelta: 0.02,
-      longitudeDelta: 0.02
-    }, 200);
-  };
-
-  onPressMarker = (index) => {
+  onPressMarker = index => {
     this.carousel.snapToItem(index);
   };
 
+  extractCoords = arr => arr.map(e => _.find(e, 'coord').coord);
+
   render() {
-    return (
-      <MapScreen
-        items={this.items}
-        data={this.state}
-        initialRegion={this.state.region}
-        renderItem={({ item }) => <CaseCard caseInfo={{}} />}
-        onLoadCarousel={carousel => this.carousel = carousel }
-        onLoadMap={map => this.map = map }
-        onSlideToCard={this.onSlideToCard}
-        onPressMarker={this.onPressMarker}
-      />
-    );
+    const { allCases, allEvents, currentUser } = this.props;
+    if (_.size(allCases) && _.size(allEvents)) {
+      const casesAsArr = objToArrIncludingKey(allCases);
+      const eventsAsArr = objToArrIncludingKey(allEvents);
+      const nearestThings = _.sortBy([...casesAsArr, ...eventsAsArr], data => {
+        const { coord } = _.find(data, 'coord');
+        return geolib.getDistance(currentUser.location, coord);
+      });
+      this.markers = this.extractCoords(nearestThings);
+      return (
+        <MapScreen
+          data={nearestThings}
+          initialRegion={{...this.markers[1], latitudeDelta: 0.05, longitudeDelta: 0.05}}
+          renderItem={({ item }) => item.age ? <CaseCard caseInfo={item} /> : <EventCard eventInfo={item}/>}
+          onLoadCarousel={carousel => (this.carousel = carousel)}
+          onLoadMap={map => (this.map = map)}
+          onSlideToCard={this.onSlideToCard}
+          onPressMarker={this.onPressMarker}
+          markers={this.markers}
+        />
+      );
+    } else {
+      return <LoadingScreen />;
+    }
   }
 }
 
-export default MapScreenContainer;
+const mapStateToProps = state => ({
+  allCases: state.cases.allCases,
+  allEvents: state.events.allEvents,
+  currentUser: state.auth.currentUser
+});
+
+export default connect(mapStateToProps, {})(MapScreenContainer);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, Dimensions, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -11,16 +11,20 @@ const CaseCard = ({ caseInfo, onTapCard }) => {
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.cardContainer}>
       <View style={styles.imageContainer}>
-        <Icon name='reddit-alien' type='font-awesome' size={50} color='#f1f2f2'/>
+        <Image
+          style={{ flex: 1 }}
+          source={ { uri: caseInfo.imgUrls[0] } }
+          resizeMode='contain'
+        />
       </View>
       <View style={styles.textContainer}>
         <View style={styles.line}>
           <Icon type='font-awesome' name='user' size={20}/>
-          <Text>{' '}Joe</Text>
+          <Text style={styles.caseInfoText}>{' '}{caseInfo.name}</Text>
         </View>
         <View style={styles.line}>
           <Icon type='font-awesome' name='map-marker' size={20}/>
-          <Text>{' '}Last known: Oulu</Text>
+          <Text style={styles.caseInfoText}>{' '}{caseInfo.lastKnownLoc.city}, {caseInfo.lastKnownLoc.country}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -30,14 +34,12 @@ const CaseCard = ({ caseInfo, onTapCard }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     width: viewportWidth / 2.2,
-    height: 250,
+    height: 225,
     paddingRight: itemHorizontalMargin * 2
   },
   imageContainer: {
     flex: 4,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F47B5D'
   },
   textContainer: {
     flex: 1,
@@ -51,7 +53,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 5,
     alignItems: 'center'
+  },
+  caseInfoText: {
+    fontSize: 12
   }
+
 });
 
 CaseCard.propTypes = {

@@ -38,9 +38,16 @@ class LoginScreenContainer extends Component {
         onChangePasswordField={this.onChangePasswordField}
         onChangeEmailField={this.onChangeEmailField}
         onPressSignup={this.onPressSignup}
+        isLoggingIn={this.props.isLoggingIn}
       />
     );
   }
 }
 
-export default connect(null, { login, checkCredential })(LoginScreenContainer);
+const mapStateToProps = state => ({
+  isLoggingIn: state.auth.isLoggingIn
+});
+
+export default connect(mapStateToProps, { login, checkCredential })(
+  LoginScreenContainer
+);

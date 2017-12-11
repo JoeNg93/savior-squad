@@ -9,6 +9,10 @@ import {
 import { SearchBar } from 'react-native-elements';
 import CaseCard from '../components/CaseCard';
 import Slider from '../components/Slider';
+import PropTypes from 'prop-types';
+import EventCard from '../components/EventCard';
+import { objToArrIncludingKey } from '../utils/index';
+import { wp, hp } from '../utils/index';
 
 const ENTRIES1 = [
   {
@@ -43,18 +47,24 @@ const ENTRIES1 = [
   }
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ cases, events, nearestThings }) => {
   // TODO: Change from SearchBar to GoogleAutoCompleteBar
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <SearchBar
         placeholder="Search for people/events/areas..."
         round
-        inputStyle={{ backgroundColor: 'white' }}
+        inputStyle={{
+          backgroundColor: 'white',
+          borderWidth: 1,
+          borderColor: '#2f2135',
+          fontSize: 13
+        }}
         containerStyle={{
           backgroundColor: 'transparent',
+          borderTopWidth: 0,
           borderBottomWidth: 0,
-          borderTopWidth: 0
+          marginTop: hp(1)
         }}
       />
 
@@ -68,8 +78,13 @@ const HomeScreen = () => {
           </View>
           <View style={styles.sectionContentContainer}>
             <Slider
-              items={ENTRIES1}
-              renderItem={({ item }) => <CaseCard caseInfo={{}} />}
+              items={nearestThings}
+              renderItem={({ item }) =>
+                item.age ? (
+                  <CaseCard caseInfo={item} />
+                ) : (
+                  <EventCard eventInfo={item} />
+                )}
             />
           </View>
         </View>
@@ -83,8 +98,8 @@ const HomeScreen = () => {
           </View>
           <View style={styles.sectionContentContainer}>
             <Slider
-              items={ENTRIES1}
-              renderItem={({ item }) => <CaseCard caseInfo={{}} />}
+              items={cases}
+              renderItem={({ item }) => <CaseCard caseInfo={item} />}
             />
           </View>
         </View>
@@ -98,14 +113,26 @@ const HomeScreen = () => {
           </View>
           <View style={styles.sectionContentContainer}>
             <Slider
-              items={ENTRIES1}
-              renderItem={({ item }) => <CaseCard caseInfo={{}} />}
+              items={events}
+              renderItem={({ item }) => <EventCard eventInfo={item} />}
             />
           </View>
         </View>
       </ScrollView>
     </View>
   );
+};
+
+HomeScreen.propTypes = {
+  cases: PropTypes.array,
+  events: PropTypes.array,
+  nearestThings: PropTypes.array
+};
+
+HomeScreen.defaultProps = {
+  cases: [],
+  events: [],
+  nearestThings: []
 };
 
 const styles = StyleSheet.create({

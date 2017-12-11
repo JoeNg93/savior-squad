@@ -43,12 +43,12 @@ class SignupScreenContainer extends Component {
     password,
     confirmPassword
   }) => {
-    console.log('Name: ', name);
-    console.log('Phone: ', telephoneNumber);
-    console.log('Email: ', email);
-    console.log('Password: ', password);
-    console.log('Confirm password: ', confirmPassword);
-    const { status } = await this.props.signUp({ email, password, name, telephoneNumber });
+    const { status } = await this.props.signUp({
+      email,
+      password,
+      name,
+      telephoneNumber
+    });
     if (status === 'success') {
       Alert.alert('Success', 'Account created! Logging in...', [
         {
@@ -73,9 +73,14 @@ class SignupScreenContainer extends Component {
         onChangeConfirmPasswordField={this.onChangeConfirmPasswordField}
         onChangeTelephoneNumberField={this.onChangeTelephoneNumberField}
         onClickSignup={this.onClickSignup}
+        isLoggingIn={this.props.isLoggingIn}
       />
     );
   }
 }
 
-export default connect(null, { signUp })(SignupScreenContainer);
+const mapStateToProps = state => ({
+  isLoggingIn: state.auth.isLoggingIn
+});
+
+export default connect(mapStateToProps, { signUp })(SignupScreenContainer);

@@ -10,6 +10,7 @@ import {
 import { SocialIcon } from 'react-native-elements';
 import LoginForm from '../components/LoginForm';
 import PropTypes from 'prop-types';
+import { wp, hp } from '../utils/index';
 
 const LoginScreen = ({
   onPressLogin,
@@ -17,7 +18,8 @@ const LoginScreen = ({
   password,
   onChangePasswordField,
   onChangeEmailField,
-  onPressSignup
+  onPressSignup,
+  isLoggingIn
 }) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -33,6 +35,7 @@ const LoginScreen = ({
           onChangePasswordField={onChangePasswordField}
           onPressLogin={onPressLogin}
           onPressSignup={onPressSignup}
+          isLoggingIn={isLoggingIn}
         />
       </View>
       <View style={styles.containerSmall}>
@@ -63,47 +66,51 @@ LoginScreen.propTypes = {
   onChangeEmailField: PropTypes.func,
   onChangePasswordField: PropTypes.func,
   onPressLogin: PropTypes.func,
-  onPressSignup: PropTypes.func
+  onPressSignup: PropTypes.func,
+  isLoggingIn: PropTypes.bool
 };
 
 LoginScreen.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
   onPressLogin: () => {},
-  onPressSignup: () => {}
+  onPressSignup: () => {},
+  isLoggingIn: false
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: '#4BA2AC'
+    backgroundColor: 'white'
   },
 
   logoContainer: {
     alignItems: 'center',
     flexGrow: 0.5,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: hp(10)
   },
 
   logo: {
     width: 128,
-    height: 128
+    height: 128,
   },
 
   title: {
-    color: '#FFF',
+    color: 'black',
     marginTop: 10,
     width: 160,
     textAlign: 'center',
     opacity: 0.9
   },
   containerSmall: {
-    flex: 1.25,
+    // flex: 1.25,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: hp(10)
   },
   containerHorizontal: {
-    flex: 1,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
