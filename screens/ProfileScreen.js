@@ -63,6 +63,7 @@ const ProfileScreen = ({ onPressLogout, userInfo }) => {
               title={item.title}
               leftIcon={{ name: item.icon }}
               onPress={() => {}}
+              titleStyle={{ fontSize: 15 }}
             />
           ))}
         </List>

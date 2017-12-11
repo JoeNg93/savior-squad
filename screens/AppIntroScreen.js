@@ -21,7 +21,7 @@ AppIntroScreen.defaultProps = {
 
 const renderItems = props => (
   <View style={[styles.container, { backgroundColor: props.backgroundColor }]}>
-    <Icon name={props.iconName} color="white" type="font-awesome" size={250} />
+    <Icon name={props.iconName} color="white" type="font-awesome" size={170} />
     <Text style={styles.heading}>{props.heading}</Text>
     <Text style={styles.description}>{props.description}</Text>
   </View>
