@@ -20,8 +20,10 @@ export const saveUser = ({
       .ref(`/users/${userUID}`)
       .set({ name, telephoneNumber });
     dispatch({ type: SAVE_USER_SUCCESS, payload: { name, telephoneNumber } });
+    return { status: 'success' };
   } catch (err) {
     dispatch({ type: SAVE_USER_FAIL });
+    return { status: 'fail' };
   }
 };
 
@@ -34,7 +36,10 @@ export const getUser = ({ userUID }) => async dispatch => {
       .ref(`/users/${userUID}`)
       .once('value');
     dispatch({ type: GET_USER_SUCCESS, payload: snapshot.val() });
+    return { status: 'success' };
   } catch (err) {
     dispatch({ type: GET_USER_FAIL });
+    return { status: 'fail' };
   }
 };
+
