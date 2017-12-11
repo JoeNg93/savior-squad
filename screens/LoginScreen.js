@@ -11,7 +11,7 @@ import { SocialIcon } from 'react-native-elements';
 import LoginForm from '../components/LoginForm';
 import PropTypes from 'prop-types';
 import { wp, hp } from '../utils/index';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({
   onPressLogin,
@@ -24,11 +24,16 @@ const LoginScreen = ({
 }) => {
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+      <Image
+        style={styles.backgroundImage}
+        source={require('../assets/images/Background_Login_1.png')}
+        resizeMode="cover"
+      />
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')} />
         <Text style={styles.title}>Connecting people for better</Text>
       </View>
-      <View style={[styles.container, {flex:1.75}]}>
+      <View style={[styles.container, { flex: 1.75 }]}>
         <LoginForm
           email={email}
           password={password}
@@ -40,7 +45,7 @@ const LoginScreen = ({
         />
       </View>
       <View style={styles.container}>
-          <Text style={styles.textOr}>— or —</Text>
+        <Text style={styles.textOr}>— or —</Text>
         <View style={styles.containerHorizontal}>
           <TouchableOpacity>
             <SocialIcon style={styles.social} button type="facebook" />
@@ -82,13 +87,14 @@ LoginScreen.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
 
   logoContainer: {
     flex: 1,
+    width: wp(100),
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: hp(10),
@@ -96,8 +102,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 128,
-    height: 128,
+    width: 150,
+    height: 150
   },
 
   title: {
@@ -121,17 +127,27 @@ const styles = StyleSheet.create({
     // flex: 1.25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: hp(10),
+    marginBottom: hp(10)
   },
   containerHorizontal: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp(10),
+    marginBottom: hp(10)
   },
   social: {
     height: 56,
     width: 56
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: -10,
+    width: null,
+    height: null
   }
 });
 

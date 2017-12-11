@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
-import { Font } from 'expo';
+import { Font, Permissions, Asset } from 'expo';
 import firebase from 'firebase';
 import { View, StatusBar } from 'react-native';
 import AppIntroScreenContainer from './screens/AppIntroScreenContainer';
@@ -80,6 +80,8 @@ export default class App extends React.Component {
       'raleway-regular': require('./assets/fonts/Raleway-Regular.ttf'),
       'raleway-semibold': require('./assets/fonts/Raleway-SemiBold.ttf')
     });
+    await Asset.loadAsync(require('./assets/images/Background_Login_1.png'));
+    await Asset.loadAsync(require('./assets/images/Background_Login_2.jpg'));
     this.setState({ assetLoaded: true });
   };
 
