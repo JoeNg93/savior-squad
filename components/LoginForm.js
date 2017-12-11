@@ -7,6 +7,8 @@ import {
   TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { wp, hp } from '../utils/index';
+import { Spinner } from 'nachos-ui';
 
 const LoginForm = ({
   onPressLogin,
@@ -14,14 +16,15 @@ const LoginForm = ({
   onChangeEmailField,
   password,
   onChangePasswordField,
-  onPressSignup
+  onPressSignup,
+  isLoggingIn
 }) => {
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor="rgba(255,255,255,0.7)"
+        placeholderTextColor="rgba(0, 0, 0, 0.5)"
         keyboardType="email-address"
         autoCorrect={false}
         autoCapitalize="none"
@@ -31,24 +34,28 @@ const LoginForm = ({
       <TextInput
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="rgba(255,255,255,0.7)"
+        placeholderTextColor="rgba(0, 0, 0, 0.5)"
         secureTextEntry
         value={password}
         onChangeText={onChangePasswordField}
       />
 
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => onPressLogin({ email, password })}
-      >
-        <Text style={styles.buttonText}>LOG IN</Text>
-      </TouchableOpacity>
+      {isLoggingIn ? (
+        <View style={styles.spinnerContainer}>
+          <Spinner color="#9EE6CF" duration={300} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => onPressLogin({ email, password })}
+        >
+          <Text style={styles.buttonText}>LOG IN</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.signupTextContainer}>
         <Text style={styles.signupText}>Dont have an account? </Text>
         <TouchableOpacity onPress={onPressSignup}>
-          <Text style={[styles.signupText, { color: 'rgba(0,0,255,0.4)' }]}>
-            Sign up
-          </Text>
+          <Text style={[styles.signupText, { color: '#4BA2AC' }]}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -61,29 +68,34 @@ LoginForm.propTypes = {
   onChangeEmailField: PropTypes.func,
   onChangePasswordField: PropTypes.func,
   onPressLogin: PropTypes.func,
-  onPressSignup: PropTypes.func
+  onPressSignup: PropTypes.func,
+  isLoggingIn: PropTypes.bool
 };
 
 LoginForm.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
   onPressLogin: () => {},
-  onPressSignup: () => {}
+  onPressSignup: () => {},
+  isLoggingIn: false
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    paddingLeft: wp(12),
+    paddingRight: wp(12)
   },
   input: {
     height: 40,
     backgroundColor: 'rgba(255,255,255,0.3)',
     marginBottom: 20,
-    color: '#FFF',
-    paddingHorizontal: 10
+    color: '#2F2125',
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#4BA2AC'
   },
   buttonContainer: {
-    backgroundColor: '#439098',
+    backgroundColor: '#50C9BA',
     paddingVertical: 15
   },
   buttonText: {
@@ -94,12 +106,17 @@ const styles = StyleSheet.create({
   signupTextContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   signupText: {
-    color: '#FFF',
+    color: '#2F2125',
     marginTop: 10,
     opacity: 0.9
+  },
+  spinnerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

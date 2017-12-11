@@ -7,6 +7,7 @@ import {
   TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { Spinner } from 'nachos-ui';
 
 const SignupForm = ({
   email,
@@ -19,7 +20,8 @@ const SignupForm = ({
   onChangePasswordField,
   onChangeConfirmPasswordField,
   onChangeNameField,
-  onChangeTelephoneNumberField
+  onChangeTelephoneNumberField,
+  isLoggingIn
 }) => {
   return (
     <View>
@@ -65,19 +67,25 @@ const SignupForm = ({
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() =>
-            onClickSignup({
-              email,
-              password,
-              confirmPassword,
-              name,
-              telephoneNumber
-            })}
-        >
-          <Text style={styles.buttonText}>Continue</Text>
-        </TouchableOpacity>
+        {isLoggingIn ? (
+          <View style={styles.spinnerContainer}>
+            <Spinner color="#9EE6CF" duration={300} />
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() =>
+              onClickSignup({
+                email,
+                password,
+                confirmPassword,
+                name,
+                telephoneNumber
+              })}
+          >
+            <Text style={styles.buttonText}>Continue</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -94,7 +102,8 @@ SignupForm.propTypes = {
   onChangePasswordField: PropTypes.func,
   onChangeConfirmPasswordField: PropTypes.func,
   onChangeNameField: PropTypes.func,
-  onChangeTelephoneNumberField: PropTypes.func
+  onChangeTelephoneNumberField: PropTypes.func,
+  isLoggingIn: PropTypes.bool
 };
 
 SignupForm.defaultProps = {
@@ -103,7 +112,8 @@ SignupForm.defaultProps = {
   onChangeEmailField: () => {},
   onChangePasswordField: () => {},
   onChangeNameField: () => {},
-  onChangeTelephoneNumberField: () => {}
+  onChangeTelephoneNumberField: () => {},
+  isLoggingIn: false
 };
 
 const styles = StyleSheet.create({
@@ -125,6 +135,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFF',
     fontWeight: '400'
+  },
+  spinnerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
