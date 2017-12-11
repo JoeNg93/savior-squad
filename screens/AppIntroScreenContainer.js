@@ -8,8 +8,7 @@ class AppIntroScreenContainer extends Component {
       backgroundColor: '#2C3E50',
       iconName: 'globe',
       description:
-        '"Please find me asap!", Robert said\n' +
-        "We're living in the world ruled by internet, but we still are not connected enough to keep ourselves from being lost",
+        "We are living in the 'connected' world but we have lost the connection to the people around us.",
       heading: 'Why?'
     },
     {
@@ -17,7 +16,7 @@ class AppIntroScreenContainer extends Component {
       backgroundColor: '#4BA2AC',
       iconName: 'search',
       description:
-        'Our goal is to rescue some random people that we dont even care. Well, not our, but you!',
+        'Our goal is to bring community members together in order to help locate missing persons.',
       heading: 'Why?'
     },
     {
@@ -25,7 +24,7 @@ class AppIntroScreenContainer extends Component {
       backgroundColor: '#02C39A',
       iconName: 'vcard-o',
       description:
-        'We have many cases about missing persons all around the world. You can follow those cases and, of course, posts your cases if you know someone is missing!',
+        'There are thousands of missing person cases all around the world. You can follow those cases and, of course, post your own case if you know someone that is missing!',
       heading: 'How?'
     },
     {
@@ -33,7 +32,7 @@ class AppIntroScreenContainer extends Component {
       iconName: 'calendar',
       backgroundColor: '#003459',
       description:
-        'We also help to organize events related to missing people, such as massive finding! You can organize events for a person too!',
+        'We provide a platform for you to organize or participate in events, such as a search party, to help find these people. Welcome to the Savior Squad!',
       heading: 'How?'
     }
   ];

@@ -42,8 +42,7 @@ const ContactScreen = ({
           />
           <View style={styles.inputContainerStyle}>
             <Text style={{ fontSize: 14, fontStyle: 'italic' }}>
-              Note! Your message will be checked by moderators first. Any
-              attempt of threating or spamming will be taken needed measures
+              Note! Your message will be checked by moderators first. Inappropriate content such as threats or spam will be dealt with accordingly.
             </Text>
           </View>
           <View
