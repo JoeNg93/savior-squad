@@ -69,7 +69,7 @@ SignupScreen.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     backgroundColor: '#4BA2AC'
   },
   backgroundImage: {

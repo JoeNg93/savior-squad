@@ -31,9 +31,9 @@ const LoginScreen = ({
       />
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')} />
-        <Text style={styles.title}>Connecting people for better</Text>
+        <Text style={styles.title}>Dont let the loved ones wait</Text>
       </View>
-      <View style={[styles.container, { flex: 1.75 }]}>
+      <View>
         <LoginForm
           email={email}
           password={password}
@@ -44,6 +44,7 @@ const LoginScreen = ({
           isLoggingIn={isLoggingIn}
         />
       </View>
+
       <View style={styles.container}>
         <Text style={styles.textOr}>— or —</Text>
         <View style={styles.containerHorizontal}>
@@ -89,12 +90,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingLeft: wp(6),
+    paddingRight: wp(6)
   },
 
   logoContainer: {
     flex: 1,
-    width: wp(100),
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: hp(10),
@@ -102,12 +104,14 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 150,
-    height: 150
+    marginLeft: hp(10),
+    marginRight: hp(10),
+    width: 164,
+    height: 164
   },
 
   title: {
-    color: 'black',
+    color: '#fffae4',
     marginTop: 10,
     marginBottom: 10,
     // width: 160,
@@ -117,23 +121,17 @@ const styles = StyleSheet.create({
     opacity: 0.9
   },
   textOr: {
-    color: '#2F2125',
-    marginTop: hp(5),
+    color: '#fffae4',
+    marginTop: hp(2),
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 0.9
-  },
-  containerSmall: {
-    // flex: 1.25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: hp(10)
   },
   containerHorizontal: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: hp(10)
+    marginBottom: hp(4)
   },
   social: {
     height: 56,

@@ -20,7 +20,8 @@ const LoginForm = ({
   isLoggingIn
 }) => {
   return (
-    <View style={styles.container}>
+    <View>
+      <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -49,13 +50,15 @@ const LoginForm = ({
           style={styles.buttonContainer}
           onPress={() => onPressLogin({ email, password })}
         >
-          <Text style={styles.buttonText}>LOG IN</Text>
+          <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
+
       )}
+      </View>
       <View style={styles.signupTextContainer}>
         <Text style={styles.signupText}>Dont have an account? </Text>
         <TouchableOpacity onPress={onPressSignup}>
-          <Text style={[styles.signupText, { color: '#4BA2AC' }]}>Sign up</Text>
+          <Text style={[styles.signupText, { color: 'rgba(80,201,186, 0.9)' }]}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -82,12 +85,14 @@ LoginForm.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
     paddingLeft: wp(12),
-    paddingRight: wp(12)
+    paddingRight: wp(12),
+    width: wp(100),
   },
   input: {
     height: 40,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     marginBottom: 20,
     color: '#2F2125',
     paddingHorizontal: 10,
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: '#4BA2AC'
   },
   buttonContainer: {
-    backgroundColor: '#50C9BA',
+    backgroundColor: 'rgba(80,201,186, 0.6)',
     paddingVertical: 15
   },
   buttonText: {
@@ -110,9 +115,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signupText: {
-    color: '#2F2125',
+    color: '#fffae4',
     marginTop: 10,
-    opacity: 0.9
   },
   spinnerContainer: {
     justifyContent: 'center',

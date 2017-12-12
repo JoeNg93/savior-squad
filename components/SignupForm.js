@@ -7,6 +7,7 @@ import {
   TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { wp, hp } from '../utils/index';
 import { Spinner } from 'nachos-ui';
 
 const SignupForm = ({
@@ -24,19 +25,19 @@ const SignupForm = ({
   isLoggingIn
 }) => {
   return (
-    <View>
+    <View >
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Name"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           value={name}
           onChangeText={onChangeNameField}
         />
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           keyboardType="email-address"
           autoCorrect={false}
           autoCapitalize="none"
@@ -46,21 +47,21 @@ const SignupForm = ({
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           secureTextEntry
           onChangeText={onChangePasswordField}
         />
         <TextInput
           style={styles.input}
           placeholder="Confirm Password"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           secureTextEntry
           onChangeText={onChangeConfirmPasswordField}
         />
         <TextInput
           style={styles.input}
           placeholder="Tel. Number"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           value={telephoneNumber}
           onChangeText={onChangeTelephoneNumberField}
         />
@@ -118,17 +119,23 @@ SignupForm.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    marginTop: hp(8),
+    justifyContent: 'center',
+    paddingLeft: wp(12),
+    paddingRight: wp(12),
+    width: wp(100),
   },
   input: {
     height: 40,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     marginBottom: 20,
-    color: '#FFF',
-    paddingHorizontal: 10
+    color: '#2F2125',
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#4BA2AC'
   },
   buttonContainer: {
-    backgroundColor: '#439098',
+    backgroundColor: 'rgba(80,201,186, 0.6)',
     paddingVertical: 15
   },
   buttonText: {
