@@ -36,11 +36,9 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 
     case GET_USER_SUCCESS:
     case SAVE_USER_SUCCESS: {
-      console.log('Type: ', type);
-      const { name, telephoneNumber } = payload;
       return {
         ...state,
-        currentUser: { ...state.currentUser, name, telephoneNumber },
+        currentUser: { ...state.currentUser, ...payload },
         isLoggingIn: false
       };
     }

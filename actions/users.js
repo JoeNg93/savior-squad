@@ -28,18 +28,12 @@ export const saveUser = ({
 };
 
 // TODO: May consider using on(..)
-export const getUser = ({ userUID }) => async dispatch => {
+export const getUser = ({ userUID }) => dispatch => {
   dispatch({ type: GET_USER_PENDING });
-  try {
-    const snapshot = await firebase
-      .database()
-      .ref(`/users/${userUID}`)
-      .once('value');
-    dispatch({ type: GET_USER_SUCCESS, payload: snapshot.val() });
-    return { status: 'success' };
-  } catch (err) {
-    dispatch({ type: GET_USER_FAIL });
-    return { status: 'fail' };
-  }
+  firebase
+    .database()
+    .ref(`/users/${userUID}`)
+    .on('value', snapshot =>
+      dispatch({ type: GET_USER_SUCCESS, payload: snapshot.val() })
+    );
 };
-
