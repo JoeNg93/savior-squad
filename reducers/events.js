@@ -1,7 +1,8 @@
-import { GET_EVENTS_SUCCESS } from '../actions/events';
+import { GET_EVENTS_SUCCESS, SET_SELECTED_EVENT_ID } from '../actions/events';
 
 const INITIAL_STATE = {
-  allEvents: {}
+  allEvents: {},
+  selectedEventId: null
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -11,6 +12,8 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         allEvents: payload
       };
+    case SET_SELECTED_EVENT_ID:
+      return { ...state, selectedEventId: payload };
     default:
       return state;
   }

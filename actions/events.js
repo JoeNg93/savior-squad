@@ -12,6 +12,7 @@ export const LEAVE_EVENT_PENDING = 'LEAVE_EVENT_PENDING';
 export const LEAVE_EVENT_SUCCESS = 'LEAVE_EVENT_SUCCESS';
 export const LEAVE_EVENT_FAIL = 'LEAVE_EVENT_FAIL';
 
+export const SET_SELECTED_EVENT_ID = 'SET_SELECTED_EVENT_ID';
 export const getAllEvents = () => async dispatch => {
   dispatch({ type: GET_EVENTS_PENDING });
   firebase
@@ -55,3 +56,8 @@ export const leaveEvent = eventId => async (dispatch, getState) => {
     return { status: 'fail' };
   }
 };
+
+export const setSelectedEventId = eventId => ({
+  type: SET_SELECTED_EVENT_ID,
+  payload: eventId
+});
