@@ -1,5 +1,8 @@
 import { GET_USER_SUCCESS, SAVE_USER_SUCCESS } from '../actions/users';
-import { GET_CURRENT_LOCATION_SUCCESS } from '../actions/locations';
+import {
+  GET_CURRENT_LOCATION_SUCCESS,
+  UPDATE_CURRENT_LOCATION
+} from '../actions/locations';
 import {
   LOGIN_SUCCESS,
   SIGNUP_SUCCESS,
@@ -44,6 +47,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     }
 
     case GET_CURRENT_LOCATION_SUCCESS:
+    case UPDATE_CURRENT_LOCATION:
       return {
         ...state,
         currentUser: { ...state.currentUser, location: payload }
