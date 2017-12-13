@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 import authReducer from './auth';
 import casesReducer from './cases';
 import eventsReducer from './events';
+import locationsReducer from './locations';
 
 export default combineReducers({
   auth: authReducer,
   cases: casesReducer,
-  events: eventsReducer
+  events: eventsReducer,
+  locations: locationsReducer,
 });
