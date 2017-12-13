@@ -14,6 +14,7 @@ import RandomScreenContainer from './screens/RandomScreenContainer';
 import ProfileScreenContainer from './screens/ProfileScreenContainer';
 import LoginScreenContainer from './screens/LoginScreenContainer';
 import SignupScreenContainer from './screens/SignupScreenContainer';
+import CreateNewCaseScreenContainer from './screens/CreateNewCaseScreenContainer';
 import firebaseConfig from './firebase_config';
 
 const MainNavigator = StackNavigator(
@@ -91,7 +92,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <View style={{ flex: 1 }}>
             <StatusBar barStyle="light-content" />
-            <MainNavigator />
+            <CreateNewCaseScreenContainer/>
           </View>
         </Provider>
       );
