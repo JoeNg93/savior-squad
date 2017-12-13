@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import _ from 'lodash';
 
 export const GET_EVENTS_PENDING = 'GET_EVENTS_PENDING';
 export const GET_EVENTS_SUCCESS = 'GET_EVENTS_SUCCESS';
@@ -40,7 +41,7 @@ export const joinEvent = eventId => async (dispatch, getState) => {
     await firebase
       .database()
       .ref(`/events/${eventId}/participants/${currentUser.uid}`)
-      .set(currentUser);
+      .set(_.omit(currentUser, 'location'));
     dispatch({ type: JOIN_EVENT_SUCCESS });
     return { status: 'success' };
   } catch (err) {
