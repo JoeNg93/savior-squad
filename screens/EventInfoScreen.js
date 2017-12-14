@@ -176,7 +176,7 @@ EventInfoScreen.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50
+    backgroundColor: 'white'
   },
   infoContainer: {
     flexDirection: 'row',
