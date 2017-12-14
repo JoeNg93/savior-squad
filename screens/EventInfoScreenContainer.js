@@ -144,9 +144,12 @@ class EventInfoScreenContainer extends Component {
   };
 
   onClickParticipate = async eventId => {
-    const { status } = await this.props.joinEvent(eventId);
-    if (status === 'success') {
+    const { saveEvent, joinEvent, navigation } = this.props;
+    const { status: joinStatus } = await joinEvent(eventId);
+    const { status: saveStatus } = await saveEvent(eventId);
+    if (joinStatus === 'success' && saveStatus === 'success') {
       Alert.alert('Success', 'Participated! Event is saved to your Saved');
+      navigation.setParams({ eventIsSaved: true });
     }
   };
 
