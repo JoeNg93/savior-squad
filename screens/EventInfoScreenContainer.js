@@ -11,7 +11,7 @@ import {
   saveEvent,
   unsaveEvent
 } from '../actions/events';
-import { Alert, TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity, View, Share } from 'react-native';
 import {
   listenToLocationChange,
   stopListeningToLocationChange
@@ -77,7 +77,19 @@ class EventInfoScreenContainer extends Component {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{ marginRight: 10 }}>
+        <TouchableOpacity
+          style={{ marginRight: 10 }}
+          onPress={() => {
+            const { eventInfo } = navigation.state.params;
+            const { loc, name, id, date, time } = eventInfo;
+            Share.share({
+              title: eventInfo.name,
+              message: `Hey, we're organizing an event called "${name}" for ${eventInfo
+                .case[Object.keys(eventInfo.case)[0]]
+                .name} at ${loc.streetAddress}, ${loc.postalCode} ${loc.city}, ${loc.country} on ${date}, starting at ${time}. Join us at https://www.savior-squad.com/events/${id}`
+            });
+          }}
+        >
           <Icon
             type="font-awesome"
             name="share"
@@ -108,14 +120,16 @@ class EventInfoScreenContainer extends Component {
       selectedEventId,
       saveEvent,
       unsaveEvent,
-      currentUser
+      currentUser,
+      allEvents
     } = this.props;
     navigation.setParams({
       saveEvent: () => saveEvent(selectedEventId),
       unsaveEvent: () => unsaveEvent(selectedEventId),
       eventIsSaved: !!(
         currentUser.events && currentUser.events[selectedEventId]
-      )
+      ),
+      eventInfo: { ...allEvents[selectedEventId], id: selectedEventId }
     });
   };
 
