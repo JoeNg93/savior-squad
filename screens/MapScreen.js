@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { MapView } from 'expo';
 import Slider from '../components/Slider';
 import PropTypes from 'prop-types';
@@ -30,11 +30,14 @@ const MapScreen = ({
                 onPress={() => onPressMarker(index)}
               >
                 {data[index].age ? (
-                  <Icon
-                    name="user-secret"
-                    type="font-awesome"
-                    color="white"
-                    containerStyle={{ backgroundColor: '#4BA2AC' }}
+                  <Image
+                    source={{ uri: data[index].imgUrls[0] }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                      resizeMode: 'contain'
+                    }}
                   />
                 ) : (
                   <Icon
