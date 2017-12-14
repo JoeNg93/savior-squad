@@ -5,8 +5,20 @@ import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import LoadingScreen from '../components/LoadingScreen';
 import _ from 'lodash';
-import { joinEvent, leaveEvent } from '../actions/events';
-import { Alert } from 'react-native';
+import {
+  joinEvent,
+  leaveEvent,
+  saveEvent,
+  unsaveEvent
+} from '../actions/events';
+import { Alert, TouchableOpacity, View } from 'react-native';
+import {
+  listenToLocationChange,
+  stopListeningToLocationChange
+} from '../actions/locations';
+import { setSelectedCaseId } from '../actions/cases';
+import { NavigationActions } from 'react-navigation';
+import { getIconName } from '../utils/index';
 
 class EventInfoScreenContainer extends Component {
   componentWillMount = async () => {
@@ -22,35 +34,114 @@ class EventInfoScreenContainer extends Component {
   };
 
   static navigationOptions = ({ navigation }) => ({
-    headerTitle: 'Event Title',
+    headerTitle: 'Event',
     headerStyle: { backgroundColor: '#50C9BA' },
-    headerTitleStyle: { color: 'white' },
+    headerTintColor: 'white',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="wheelchair-alt" type="font-awesome" color={tintColor} />
+      <Icon
+        name={getIconName(navigation.state.params.tabBarLabel)}
+        type="font-awesome"
+        color={tintColor}
+      />
     ),
-    tabBarLabel: 'Random'
+    headerRight: (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity
+          style={{ marginRight: 20 }}
+          onPress={async () => {
+            const {
+              saveEvent,
+              unsaveEvent,
+              eventIsSaved
+            } = navigation.state.params;
+            if (eventIsSaved) {
+              const { status } = await unsaveEvent();
+              if (status === 'success') {
+                Alert.alert('Success', 'Unsaved!');
+                navigation.setParams({ eventIsSaved: false });
+              }
+            } else {
+              const { status } = await saveEvent();
+              if (status === 'success') {
+                Alert.alert('Success', 'Saved!');
+                navigation.setParams({ eventIsSaved: true });
+              }
+            }
+          }}
+        >
+          <Icon
+            type="font-awesome"
+            name={navigation.state.params.eventIsSaved ? 'star' : 'star-o'}
+            iconStyle={{
+              color: navigation.state.params.eventIsSaved ? '#4BA2AC' : 'white'
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{ marginRight: 10 }}>
+          <Icon
+            type="font-awesome"
+            name="share"
+            iconStyle={{ color: 'white' }}
+          />
+        </TouchableOpacity>
+      </View>
+    ),
+    tabBarLabel: navigation.state.params.tabBarLabel,
+    tabBarOnPress: ({ jumpToIndex, scene }) => {
+      jumpToIndex(scene.index);
+      navigation.dispatch(
+        NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: scene.route.routes[0].routeName
+            })
+          ]
+        })
+      );
+    }
   });
 
-  event = {
-    locationName: 'Isokatu 25, 90100 Oulu, Finland',
-    locationCoor: { latitude: 65.011363, longitude: 25.472509 },
-    name: 'My Event',
-    date: '10 Dec',
-    time: '9:00 AM - 10:00 AM',
-    description: 'Just play around and have fun',
-    participants: {
-      user1: {},
-      user2: {}
-    },
-    case: {
-      personName: 'Joe'
-    }
+  componentDidMount = () => {
+    const {
+      navigation,
+      selectedEventId,
+      saveEvent,
+      unsaveEvent,
+      currentUser
+    } = this.props;
+    navigation.setParams({
+      saveEvent: () => saveEvent(selectedEventId),
+      unsaveEvent: () => unsaveEvent(selectedEventId),
+      eventIsSaved: !!(
+        currentUser.events && currentUser.events[selectedEventId]
+      )
+    });
   };
 
-  onClickStartSearching = () =>
-    this.props.navigation.navigate('locationTracking', {
-      eventName: this.props.allEvents['-L-xUx5yi66djs2CKt11'].name
+  onClickStartSearching = () => {
+    const {
+      selectedEventId,
+      navigation,
+      listenToLocationChange,
+      allEvents
+    } = this.props;
+
+    navigation.navigate('locationTracking', {
+      eventName: allEvents[selectedEventId].name,
+      tabBarLabel: navigation.state.params.tabBarLabel
     });
+    // TODO: Uncomment the line below later
+    // listenToLocationChange(selectedEvent.id);
+  };
+
+  onClickCaseInfo = caseId => {
+    const { navigation, setSelectedCaseId } = this.props;
+    setSelectedCaseId(caseId);
+    navigation.navigate('caseInfo', {
+      tabBarLabel: navigation.state.params.tabBarLabel
+    });
+  };
 
   onClickParticipate = async eventId => {
     const { status } = await this.props.joinEvent(eventId);
@@ -60,23 +151,22 @@ class EventInfoScreenContainer extends Component {
   };
 
   onClickUnparticipate = async eventId => {
-    const { status } = await this.props.leaveEvent(eventId);
-    if (status === 'success') {
+    const { allEvents, selectedEventId } = this.props;
+    const { status1 } = await this.props.leaveEvent(eventId);
+    const { status2 } = await this.props.stopListeningToLocationChange(eventId);
+
+    if (status1 === 'success' && status2 === 'success') {
       Alert.alert('Success', 'Unparticipated!');
     }
   };
 
   render() {
-    const { allEvents, currentUser } = this.props;
-    const eventId = '-L-xUx5yi66djs2CKt11';
+    const { currentUser, selectedEventId, allEvents } = this.props;
     const userId = currentUser.uid;
-    if (_.size(allEvents)) {
+    if (selectedEventId) {
       return (
         <EventInfoScreen
-          event={{
-            ...allEvents[eventId],
-            id: eventId
-          }}
+          event={{ ...allEvents[selectedEventId], id: selectedEventId }}
           onGetMarkerRef={ref => (this.markerRef = ref)}
           onMapRegionChangeComplete={() => this.markerRef.showCallout()}
           onClickStartSearching={this.onClickStartSearching}
@@ -84,10 +174,11 @@ class EventInfoScreenContainer extends Component {
           onClickUnparticipate={this.onClickUnparticipate}
           participated={
             !!(
-              allEvents[eventId].participants &&
-              allEvents[eventId].participants[userId]
+              allEvents[selectedEventId].participants &&
+              allEvents[selectedEventId].participants[userId]
             )
           }
+          onClickCaseInfo={this.onClickCaseInfo}
         />
       );
     } else {
@@ -98,9 +189,16 @@ class EventInfoScreenContainer extends Component {
 
 const mapStateToProps = state => ({
   allEvents: state.events.allEvents,
-  currentUser: state.auth.currentUser
+  currentUser: state.auth.currentUser,
+  selectedEventId: state.events.selectedEventId
 });
 
-export default connect(mapStateToProps, { joinEvent, leaveEvent })(
-  EventInfoScreenContainer
-);
+export default connect(mapStateToProps, {
+  joinEvent,
+  leaveEvent,
+  listenToLocationChange,
+  stopListeningToLocationChange,
+  setSelectedCaseId,
+  saveEvent,
+  unsaveEvent
+})(EventInfoScreenContainer);

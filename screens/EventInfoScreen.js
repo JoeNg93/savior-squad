@@ -20,7 +20,8 @@ const EventInfoScreen = ({
   participated,
   onClickParticipate,
   onClickUnparticipate,
-  onClickStartSearching
+  onClickStartSearching,
+  onClickCaseInfo
 }) => {
   return (
     <ScrollView style={styles.container}>
@@ -50,12 +51,15 @@ const EventInfoScreen = ({
       <View style={styles.caseInfo}>
         <Text style={styles.eventAgendaTitle}>Case Info</Text>
       </View>
-      <TouchableOpacity style={styles.personInfo}>
+      <TouchableOpacity
+        style={styles.personInfo}
+        onPress={() => onClickCaseInfo(Object.keys(event.case)[0])}
+      >
         <View style={styles.userAvatar}>
           <Icon name="user" type="font-awesome" size={wp(15)} />
         </View>
         <View style={styles.userDetail}>
-          <Text>{event.case.name}</Text>
+          <Text>{Object.values(event.case)[0].name}</Text>
         </View>
         <View style={styles.clickMoreDetails}>
           <Icon name="angle-right" type="font-awesome" size={wp(15)} />
@@ -154,7 +158,8 @@ EventInfoScreen.propTypes = {
   participated: PropTypes.bool,
   onClickParticipate: PropTypes.func,
   onClickUnparticipate: PropTypes.func,
-  onClickStartSearching: PropTypes.func
+  onClickStartSearching: PropTypes.func,
+  onClickCaseInfo: PropTypes.func
 };
 
 EventInfoScreen.defaultProps = {
@@ -164,7 +169,8 @@ EventInfoScreen.defaultProps = {
   onMapRegionChangeComplete: () => {},
   onClickParticipate: () => {},
   onClickUnparticipate: () => {},
-  onClickStartSearching: () => {}
+  onClickStartSearching: () => {},
+  onClickCaseInfo: () => {}
 };
 
 const styles = StyleSheet.create({
