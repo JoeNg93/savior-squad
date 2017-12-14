@@ -7,7 +7,7 @@ import { Icon } from 'react-native-elements';
 
 class SignupScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
-    headerTitle: 'Signup',
+    headerTitle: 'Sign Up',
     headerStyle: { backgroundColor: '#50C9BA' },
     headerTitleStyle: { color: 'white' },
     tabBarIcon: ({ tintColor }) => (

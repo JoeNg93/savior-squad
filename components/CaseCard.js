@@ -38,7 +38,7 @@ const CaseCard = ({ caseInfo, onTapCard }) => {
         <View style={styles.line}>
           <Icon type="font-awesome" name="map-marker" size={20} />
           <Text style={styles.caseInfoText}>
-            {' '}
+            {'  '}
             {caseInfo.lastKnownLoc.city}, {caseInfo.lastKnownLoc.country}
           </Text>
         </View>
@@ -59,7 +59,10 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    padding: 10
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 3
   },
   header: {
     marginTop: 10,

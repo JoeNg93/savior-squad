@@ -25,7 +25,7 @@ const CaseInfo = ({ caseInfo, onClickCloseMoreInfo }) => {
         backgroundColor="#4BA2AC"
       />
 
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <View contentContainerStyle={styles.contentContainer}>
         {/* Quick info L1 */}
         <View style={styles.lineSpotlight}>
           <View style={styles.areaSpotlight}>
@@ -62,7 +62,7 @@ const CaseInfo = ({ caseInfo, onClickCloseMoreInfo }) => {
           <Text style={styles.textTitleDescription}>Context and comments</Text>
           <Text style={styles.textDescription}>{caseInfo.context}</Text>
         </View>
-      </ScrollView>
+      </View>
     </ScrollView>
   );
 };

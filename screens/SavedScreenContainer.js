@@ -32,7 +32,7 @@ class SavedScreenContainer extends Component {
 
   onPressEvent = eventId => {
     this.props.setSelectedEventId(eventId);
-    this.props.navigation.navigate('caseInfo', { tabBarLabel: 'Saved' });
+    this.props.navigation.navigate('eventInfo', { tabBarLabel: 'Saved' });
   };
 
   render() {

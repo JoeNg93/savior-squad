@@ -5,7 +5,9 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Image,
+  Alert
 } from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import { wp, hp } from '../utils/index';
@@ -23,8 +25,31 @@ const EventInfoScreen = ({
   onClickStartSearching,
   onClickCaseInfo
 }) => {
+  const caseInfo = Object.values(event.case)[0];
+  const { name, lastKnownLoc } = caseInfo;
+
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.caseInfo}>
+        <Text
+          style={[
+            styles.eventAgendaTitle,
+            {
+              color: '#4BA2AC',
+              paddingTop: 8,
+              paddingBottom: 8,
+              paddingLeft: 60,
+              paddingRight: 60,
+              borderRadius: 16,
+              fontFamily: 'proxima-nova-extra-bold',
+              marginBottom: hp(2),
+              fontSize: 40
+            }
+          ]}
+        >
+          {event.name}
+        </Text>
+      </View>
       <View style={styles.eventInfo}>
         <View style={styles.infoContainer}>
           <Icon name="map-marker" type="font-awesome" />
@@ -39,15 +64,16 @@ const EventInfoScreen = ({
           </Text>
         </View>
         <View style={styles.infoContainer}>
-          <Icon name="users" type="font-awesome" />
-          <Text style={styles.eventTextInfo}>
+          <Icon
+            name="users"
+            type="font-awesome"
+            containerStyle={{ marginLeft: -5 }}
+          />
+          <Text style={[styles.eventTextInfo, { paddingLeft: wp(1.5) }]}>
             {event.participants ? _.size(event.participants) : 0} participants
           </Text>
         </View>
       </View>
-      <Divider
-        style={{ marginLeft: wp(5), marginRight: wp(5), marginTop: hp(2) }}
-      />
       <View style={styles.caseInfo}>
         <Text style={styles.eventAgendaTitle}>Case Info</Text>
       </View>
@@ -56,13 +82,31 @@ const EventInfoScreen = ({
         onPress={() => onClickCaseInfo(Object.keys(event.case)[0])}
       >
         <View style={styles.userAvatar}>
-          <Icon name="user" type="font-awesome" size={wp(15)} />
+          <Image
+            source={{ uri: caseInfo.imgUrls[0] }}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 30,
+              resizeMode: 'contain'
+            }}
+          />
+          {/*<Icon name="user" type="font-awesome" size={wp(12)} color='#50C9BA' />*/}
         </View>
         <View style={styles.userDetail}>
-          <Text>{Object.values(event.case)[0].name}</Text>
+          <Text style={{ fontSize: 18, color: '#4BA2AC' }}>{name}</Text>
+          <Text>
+            Last seen: {lastKnownLoc.streetAddress}, {lastKnownLoc.postalCode}{' '}
+            {lastKnownLoc.city}, {lastKnownLoc.country}
+          </Text>
         </View>
         <View style={styles.clickMoreDetails}>
-          <Icon name="angle-right" type="font-awesome" size={wp(15)} />
+          <Icon
+            name="angle-right"
+            type="font-awesome"
+            size={wp(12)}
+            color="#50C9BA"
+          />
         </View>
       </TouchableOpacity>
       <View style={styles.eventAction}>
@@ -90,15 +134,33 @@ const EventInfoScreen = ({
             </Text>
             <Button
               title="Unparticipate"
-              raised
-              onPress={() => onClickUnparticipate(event.id)}
+              onPress={() => {
+                Alert.alert(
+                  'Warning',
+                  'Are you sure you want to unparticipate?',
+                  [
+                    { text: 'Cancel' },
+                    {
+                      text: 'OK',
+                      onPress: () => onClickUnparticipate(event.id)
+                    }
+                  ]
+                );
+              }}
               containerViewStyle={{ marginBottom: hp(2.5) }}
+              buttonStyle={{
+                backgroundColor: 'white',
+                borderColor: '#50C9BA',
+                borderWidth: 1
+              }}
+              textStyle={{ color: '#4BA2AC' }}
             />
             <Button
               title="Start Searching"
               raised
               onPress={onClickStartSearching}
               icon={{ name: 'crosshairs', type: 'font-awesome' }}
+              buttonStyle={{ backgroundColor: '#50C9BA' }}
             />
           </View>
         ) : (
@@ -107,12 +169,10 @@ const EventInfoScreen = ({
             raised
             icon={{ name: 'hand-paper-o', type: 'font-awesome' }}
             onPress={() => onClickParticipate(event.id)}
+            buttonStyle={{ backgroundColor: '#50C9BA' }}
           />
         )}
       </View>
-      <Divider
-        style={{ marginLeft: wp(5), marginRight: wp(5), marginTop: hp(2) }}
-      />
       <View style={styles.eventAgenda}>
         <Text style={styles.eventAgendaTitle}>Where we'll meet</Text>
       </View>
@@ -140,10 +200,7 @@ const EventInfoScreen = ({
           </MapView.Marker>
         </MapView>
       </View>
-      <Divider
-        style={{ marginLeft: wp(5), marginRight: wp(5), marginTop: hp(5) }}
-      />
-      <View style={styles.eventAgenda}>
+      <View style={[styles.eventAgenda, { marginTop: hp(10) }]}>
         <Text style={styles.eventAgendaTitle}>What we'll do</Text>
         <Text style={styles.eventDescription}>{event.description}</Text>
       </View>
@@ -192,9 +249,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    paddingTop: hp(2.5),
-    paddingBottom: hp(2.5),
-    marginTop: hp(3)
+    paddingTop: hp(1.5),
+    paddingBottom: hp(1.5),
+    marginTop: hp(3),
+    borderColor: '#50C9BA'
   },
   userAvatar: {
     flex: 1,
@@ -219,11 +277,11 @@ const styles = StyleSheet.create({
   eventAgenda: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: hp(3),
-    marginBottom: hp(3)
+    marginTop: hp(8),
+    marginBottom: hp(2)
   },
   eventAgendaTitle: {
-    fontSize: wp(7),
+    fontSize: 35,
     fontWeight: 'bold'
   },
   map: {
@@ -243,7 +301,10 @@ const styles = StyleSheet.create({
   },
   eventDescription: {
     marginTop: hp(2),
-    marginBottom: hp(2)
+    marginBottom: hp(2),
+    marginLeft: wp(6),
+    marginRight: wp(6),
+    fontSize: 16
   },
   caseInfo: {
     marginTop: hp(2),

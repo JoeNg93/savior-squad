@@ -84,7 +84,7 @@ const SignupForm = ({
                 telephoneNumber
               })}
           >
-            <Text style={styles.buttonText}>Continue</Text>
+            <Text style={styles.buttonText}>CONTINUE</Text>
           </TouchableOpacity>
         )}
       </View>

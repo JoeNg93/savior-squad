@@ -35,7 +35,12 @@ const EventCard = ({ eventInfo, onTapCard }) => {
           </Text>
         </View>
         <View style={styles.line}>
-          <Icon type="font-awesome" name="clock-o" size={20} />
+          <Icon
+            type="font-awesome"
+            name="clock-o"
+            size={20}
+            containerStyle={{ marginLeft: -3 }}
+          />
           <Text style={styles.eventInfoText}>
             {' '}
             {eventInfo.date}, {eventInfo.time}
@@ -69,7 +74,10 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    padding: 10
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 3
   },
   header: {
     marginTop: 10,

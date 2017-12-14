@@ -33,7 +33,7 @@ const HomeScreen = ({
         inputStyle={{
           backgroundColor: 'white',
           borderWidth: 1,
-          borderColor: '#2f2135',
+          borderColor: '#50C9BA',
           fontSize: 13
         }}
         containerStyle={{
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: '#2f2135'
   },
   sectionContentContainer: {

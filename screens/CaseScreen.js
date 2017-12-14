@@ -18,6 +18,8 @@ import Modal from 'react-native-modalbox';
 import CaseInfo from '../components/CaseInfo';
 import ContactScreenContainer from './ContactScreenContainer';
 import CreateEventScreenContainer from './CreateEventScreenContainer';
+import _ from 'lodash';
+import { wp, hp } from '../utils/index';
 
 const { width, height } = Dimensions.get('window');
 
@@ -127,7 +129,9 @@ const CaseScreen = ({
                       fontSize: 35,
                       color: '#4BA2AC',
                       textAlign: 'center',
-                      fontWeight: '500'
+                      fontWeight: 'bold',
+                      marginTop: hp(1),
+                      marginBottom: hp(1)
                     }}
                   >
                     {caseInfo.name}
@@ -135,13 +139,12 @@ const CaseScreen = ({
                 </View>
                 <View style={styles.InfoBodyTextView}>
                   <Text style={styles.InfoBodyTextStyle}>
-                    {caseInfo.context}
+                    {_.take(caseInfo.context.split('.'), 3).join('.') + '...'}
                     <TouchableOpacity
                       style={styles.MoreInfoLink}
                       onPress={onClickMoreInfo}
                     >
                       <Text style={{ color: 'blue', fontSize: 14 }}>
-                        {' '}
                         More info
                       </Text>
                     </TouchableOpacity>
@@ -152,25 +155,17 @@ const CaseScreen = ({
               <View style={styles.InfoButtonsContainer}>
                 <View style={styles.ContactOwnerView}>
                   <Button
-                    raised={false}
                     title="Contact Owner"
-                    style={styles.ContactOwnerButton}
-                    backgroundColor="white"
-                    color="#4BA2AC"
-                    borderRadius={3}
-                    underlayColor="#4BA2AC"
+                    buttonStyle={styles.ContactOwnerButton}
+                    textStyle={{ color: '#4BA2AC' }}
                     onPress={onClickContactOwner}
                   />
                 </View>
                 <View style={styles.CreateEventView}>
                   <Button
-                    raised={false}
                     title="Create Event"
-                    style={styles.CreateEventButton}
-                    backgroundColor="white"
-                    color="#4BA2AC"
-                    borderRadius={3}
-                    underlayColor="#4BA2AC"
+                    buttonStyle={styles.CreateEventButton}
+                    textStyle={{ color: '#4BA2AC' }}
                     onPress={onClickCreateEvent}
                   />
                 </View>
@@ -202,7 +197,7 @@ const CaseScreen = ({
               <View style={styles.mapIndicator} />
             </MapView.Marker>
           </MapView>
-          <Text style={styles.PastEvents}>Past Events</Text>
+          <Text style={styles.PastEvents}>Events</Text>
           <View style={styles.PastEventsContainer}>
             <List>
               <FlatList
@@ -338,9 +333,9 @@ const styles = StyleSheet.create({
   },
 
   InfoBodyTextStyle: {
-    fontSize: 18,
-    paddingLeft: 5,
-    paddingRight: 5
+    fontSize: 16,
+    marginLeft: wp(6),
+    marginRight: wp(6),
   },
 
   InfoButtonsContainer: {
@@ -369,29 +364,30 @@ const styles = StyleSheet.create({
   },
 
   ContactOwnerButton: {
-    borderRadius: 3,
     borderWidth: 1,
-    borderColor: '#4BA2AC'
+    borderColor: '#4BA2AC',
+    backgroundColor: 'white'
   },
 
   CreateEventButton: {
-    borderRadius: 3,
     borderWidth: 1,
-    borderColor: '#4BA2AC'
+    borderColor: '#4BA2AC',
+    backgroundColor: 'white'
   },
 
   LastSeen: {
     textAlign: 'center',
-    fontSize: 40,
-    fontWeight: '200',
-    marginTop: 20
+    fontSize: 35,
+    fontWeight: '400',
+    marginTop: hp(6),
+    marginBottom: hp(2)
   },
 
   PastEvents: {
     textAlign: 'center',
-    fontSize: 40,
-    fontWeight: '200',
-    marginTop: 20
+    fontSize: 35,
+    fontWeight: '400',
+    marginTop: hp(8),
   },
 
   PastEventsContainer: {

@@ -50,7 +50,7 @@ const LoginForm = ({
           style={styles.buttonContainer}
           onPress={() => onPressLogin({ email, password })}
         >
-          <Text style={styles.buttonText}>Log in</Text>
+          <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
       )}

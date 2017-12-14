@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     // textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.9
+    opacity: 0.9,
+    fontSize: 20
   },
   textOr: {
     color: '#fffae4',
