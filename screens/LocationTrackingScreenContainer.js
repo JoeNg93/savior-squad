@@ -11,31 +11,13 @@ import { NavigationActions } from 'react-navigation';
 import { getIconName } from '../utils/index';
 
 class LocationTrackingScreenContainer extends Component {
-  // static navigationOptions = ({ navigation }) => ({
-  //   headerTitle: navigation.state.params.eventName,
-  //   headerStyle: { backgroundColor: '#50C9BA' },
-  //   headerTitleStyle: { color: 'white' },
-  //   headerTintColor: 'white',
-  //   headerLeft: (
-  //     <TouchableOpacity
-  //       style={{ paddingLeft: wp(2) }}
-  //       onPress={() => navigation.goBack()}
-  //     >
-  //       <Icon name="angle-left" type="font-awesome" color="white" size={35} />
-  //     </TouchableOpacity>
-  //   ),
-  //   tabBarIcon: ({ tintColor }) => (
-  //     <Icon name="wheelchair-alt" type="font-awesome" color={tintColor} />
-  //   ),
-  //   tabBarLabel: navigation.state.params.tabBarLabel
-  // });
   static navigationOptions = ({ navigation }) => ({
     headerTitle: navigation.state.params.eventName,
     headerStyle: { backgroundColor: '#50C9BA' },
     headerTintColor: 'white',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        name={getIconName(state.params.tabBarLabel)}
+        name={getIconName(navigation.state.params.tabBarLabel)}
         type="font-awesome"
         color={tintColor}
       />
@@ -68,10 +50,30 @@ class LocationTrackingScreenContainer extends Component {
   };
 
   onClickStopTracking = () => {
+    const {
+      stopListeningToLocationChange,
+      navigation,
+      selectedEventId
+    } = this.props;
     Alert.alert(
       'Stop tracking',
       'Are you sure you want to stop tracking? No one can see you anymore',
-      [{ text: 'Cancel', onPress: () => {} }, { text: 'OK', onPress: () => {} }]
+      [
+        { text: 'Cancel', onPress: () => {} },
+        {
+          text: 'OK',
+          onPress: async () => {
+            console.log('On press Stop Tracking');
+            const { status } = await stopListeningToLocationChange(
+              selectedEventId
+            );
+            console.log(status);
+            if (status === 'success') {
+              navigation.goBack();
+            }
+          }
+        }
+      ]
     );
   };
 
