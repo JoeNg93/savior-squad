@@ -7,19 +7,35 @@ import _ from 'lodash';
 import { hp, wp } from '../utils';
 
 const LocationTrackingScreen = ({
-  userLocations,
   onClickStopTracking,
   onClickTakeSnapshot,
   onLoadMap,
-  initialRegion
+  currentLocation,
+  users
 }) => {
   return (
     <View style={{ flex: 1 }}>
       <MapView
-        initialRegion={initialRegion}
+        initialRegion={{
+          ...currentLocation,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05
+        }}
         style={{ flex: 1 }}
         ref={onLoadMap}
-      />
+      >
+        <MapView.Marker coordinate={currentLocation} />
+        {_.map(users, userInfo => {
+          if (userInfo.location) {
+            return (
+              <MapView.Marker coordinate={userInfo.location} key={userInfo.uid}>
+                <Icon type="material-community" name="account-location" />
+              </MapView.Marker>
+            );
+          }
+          return null;
+        })}
+      </MapView>
       <Button
         title="Stop Tracking"
         raised
@@ -43,15 +59,15 @@ const LocationTrackingScreen = ({
 };
 
 LocationTrackingScreen.propTypes = {
-  userLocations: PropTypes.object,
-  initialRegion: PropTypes.object,
   onClickStopTracking: PropTypes.func,
   onClickTakeSnapshot: PropTypes.func,
-  onLoadMap: PropTypes.func
+  onLoadMap: PropTypes.func,
+  currentLocation: PropTypes.object,
+  users: PropTypes.object
 };
 
 LocationTrackingScreen.defaultProps = {
-  userLocations: {},
+  users: {},
   onClickStopTracking: () => {},
   onClickTakeSnapshot: () => {},
   onLoadMap: () => {}
