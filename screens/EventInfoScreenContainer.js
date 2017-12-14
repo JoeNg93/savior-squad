@@ -138,7 +138,7 @@ class EventInfoScreenContainer extends Component {
       selectedEventId,
       navigation,
       listenToLocationChange,
-      allEvents
+      allEvents,
     } = this.props;
 
     navigation.navigate('locationTracking', {
@@ -146,7 +146,7 @@ class EventInfoScreenContainer extends Component {
       tabBarLabel: navigation.state.params.tabBarLabel
     });
     // TODO: Uncomment the line below later
-    // listenToLocationChange(selectedEvent.id);
+    listenToLocationChange(selectedEventId);
   };
 
   onClickCaseInfo = caseId => {
