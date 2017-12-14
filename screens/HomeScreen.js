@@ -14,40 +14,16 @@ import EventCard from '../components/EventCard';
 import { objToArrIncludingKey } from '../utils/index';
 import { wp, hp } from '../utils/index';
 
-const ENTRIES1 = [
-  {
-    title: 'Beautiful and dramatic Antelope Canyon',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'http://i.imgur.com/UYiroysl.jpg'
-  },
-  {
-    title: 'Earlier this morning, NYC',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'http://i.imgur.com/UPrs1EWl.jpg'
-  },
-  {
-    title: 'White Pocket Sunset',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-    illustration: 'http://i.imgur.com/MABUbpDl.jpg'
-  },
-  {
-    title: 'Acrocorinth, Greece',
-    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
-    illustration: 'http://i.imgur.com/KZsmUi2l.jpg'
-  },
-  {
-    title: 'The lone tree, majestic landscape of New Zealand',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'http://i.imgur.com/2nCt3Sbl.jpg'
-  },
-  {
-    title: 'Middle Earth, Germany',
-    subtitle: 'Lorem ipsum dolor sit amet',
-    illustration: 'http://i.imgur.com/lceHsT6l.jpg'
-  }
-];
-
-const HomeScreen = ({ cases, events, nearestThings }) => {
+const HomeScreen = ({
+  cases,
+  events,
+  nearestThings,
+  onClickSeeAllCases,
+  onClickSeeAllEvents,
+  onClickSeeAllNearYou,
+  onClickEventCard,
+  onClickCaseCard
+}) => {
   // TODO: Change from SearchBar to GoogleAutoCompleteBar
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -72,7 +48,10 @@ const HomeScreen = ({ cases, events, nearestThings }) => {
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeaderContainer}>
             <Text style={styles.sectionHeader}>Near You</Text>
-            <TouchableOpacity style={styles.leftTextHolderStyle}>
+            <TouchableOpacity
+              style={styles.leftTextHolderStyle}
+              onPress={onClickSeeAllNearYou}
+            >
               <Text style={styles.leftTextStyle}>See all ></Text>
             </TouchableOpacity>
           </View>
@@ -81,9 +60,9 @@ const HomeScreen = ({ cases, events, nearestThings }) => {
               items={nearestThings}
               renderItem={({ item }) =>
                 item.age ? (
-                  <CaseCard caseInfo={item} />
+                  <CaseCard caseInfo={item} onTapCard={onClickCaseCard} />
                 ) : (
-                  <EventCard eventInfo={item} />
+                  <EventCard eventInfo={item} onTapCard={onClickEventCard} />
                 )}
             />
           </View>
@@ -92,14 +71,19 @@ const HomeScreen = ({ cases, events, nearestThings }) => {
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeaderContainer}>
             <Text style={styles.sectionHeader}>Cases</Text>
-            <TouchableOpacity style={styles.leftTextHolderStyle}>
+            <TouchableOpacity
+              style={styles.leftTextHolderStyle}
+              onPress={onClickSeeAllCases}
+            >
               <Text style={styles.leftTextStyle}>See all ></Text>
             </TouchableOpacity>
           </View>
           <View style={styles.sectionContentContainer}>
             <Slider
               items={cases}
-              renderItem={({ item }) => <CaseCard caseInfo={item} />}
+              renderItem={({ item }) => (
+                <CaseCard caseInfo={item} onTapCard={onClickCaseCard} />
+              )}
             />
           </View>
         </View>
@@ -107,14 +91,19 @@ const HomeScreen = ({ cases, events, nearestThings }) => {
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeaderContainer}>
             <Text style={styles.sectionHeader}>Events</Text>
-            <TouchableOpacity style={styles.leftTextHolderStyle}>
+            <TouchableOpacity
+              style={styles.leftTextHolderStyle}
+              onPress={onClickSeeAllEvents}
+            >
               <Text style={styles.leftTextStyle}>See all ></Text>
             </TouchableOpacity>
           </View>
           <View style={styles.sectionContentContainer}>
             <Slider
               items={events}
-              renderItem={({ item }) => <EventCard eventInfo={item} />}
+              renderItem={({ item }) => (
+                <EventCard eventInfo={item} onTapCard={onClickEventCard} />
+              )}
             />
           </View>
         </View>
@@ -126,13 +115,23 @@ const HomeScreen = ({ cases, events, nearestThings }) => {
 HomeScreen.propTypes = {
   cases: PropTypes.array,
   events: PropTypes.array,
-  nearestThings: PropTypes.array
+  nearestThings: PropTypes.array,
+  onClickSeeAllCases: PropTypes.func,
+  onClickSeeAllEvents: PropTypes.func,
+  onClickSeeAllNearYou: PropTypes.func,
+  onClickEventCard: PropTypes.func,
+  onClickCaseCard: PropTypes.func
 };
 
 HomeScreen.defaultProps = {
   cases: [],
   events: [],
-  nearestThings: []
+  nearestThings: [],
+  onClickSeeAllCases: () => {},
+  onClickSeeAllEvents: () => {},
+  onClickSeeAllNearYou: () => {},
+  onClickEventCard: () => {},
+  onClickCaseCard: () => {}
 };
 
 const styles = StyleSheet.create({
