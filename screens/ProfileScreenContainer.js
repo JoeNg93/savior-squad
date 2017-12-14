@@ -28,7 +28,6 @@ class ProfileScreenContainer extends Component {
   };
 
   render() {
-    console.log('Current user: ', this.props.currentUser);
     return (
       <ProfileScreen
         onPressLogout={this.onPressLogout}
