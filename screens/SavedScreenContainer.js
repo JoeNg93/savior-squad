@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import SavedScreen from './SavedScreen';
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { objToArrIncludingKey } from '../utils/index';
+import { setSelectedEventId } from '../actions/events';
+import { setSelectedCaseId } from '../actions/cases';
 
 class SavedScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Saved',
     headerStyle: { backgroundColor: '#50C9BA' },
-    headerTitleStyle: { color: 'white' },
+    headerTintColor: 'white',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="star" type="font-awesome" color={tintColor} />
     ),
@@ -21,50 +25,24 @@ class SavedScreenContainer extends Component {
     this.setState({ currentTab: selectedIndex });
   };
 
-  onPressCase = (caseId) => {
-
+  onPressCase = caseId => {
+    this.props.setSelectedCaseId(caseId);
+    this.props.navigation.navigate('caseInfo', { tabBarLabel: 'Saved' });
   };
 
-  onPressEvent = (eventId) => {
-
-  };
-
-  cases = {
-    '123': {
-      name: 'Joe',
-      lastKnownLoc: {
-        city: 'Oulu',
-        country: 'Finland'
-      }
-    },
-    '456': {
-      name: 'Dmitri',
-      lastKnownLoc: {
-        city: 'Stockholm',
-        country: 'Sweden'
-      }
-    }
-  };
-
-  events = {
-    "123": {
-      name: 'Rescue lil Dmitri',
-      loc: {
-        city: 'Oulu',
-        country: 'Finland'
-      },
-      date: '2017-12-15',
-      time: '10:00'
-    }
+  onPressEvent = eventId => {
+    this.props.setSelectedEventId(eventId);
+    this.props.navigation.navigate('caseInfo', { tabBarLabel: 'Saved' });
   };
 
   render() {
+    const { events, cases } = this.props.currentUser;
     return (
       <SavedScreen
         onPressButtonGroup={this.onPressButtonGroup}
         currentTab={this.state.currentTab}
-        cases={this.cases}
-        events={this.events}
+        cases={objToArrIncludingKey(cases)}
+        events={objToArrIncludingKey(events)}
         onPressCase={this.onPressCase}
         onPressEvent={this.onPressEvent}
       />
@@ -72,4 +50,11 @@ class SavedScreenContainer extends Component {
   }
 }
 
-export default SavedScreenContainer;
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser
+});
+
+export default connect(mapStateToProps, {
+  setSelectedCaseId,
+  setSelectedEventId
+})(SavedScreenContainer);

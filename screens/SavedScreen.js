@@ -23,12 +23,7 @@ const Avatar = ({ type }) =>
     <Icon name="calendar" color="black" size={40} type="font-awesome" />
   );
 
-const Subtitle = ({
-  lastSeenLocName,
-  type,
-  eventLocation,
-  eventTime,
-}) =>
+const Subtitle = ({ lastSeenLocName, type, eventLocation, eventTime }) =>
   type === 'case' ? (
     <View style={styles.subtitle}>
       <View style={styles.subtitleLocationStyle}>
@@ -70,6 +65,76 @@ Subtitle.propTypes = {
   eventTime: PropTypes.string
 };
 
+const renderCases = (cases, onPressCase) => {
+  if (cases.length) {
+    return (
+      <FlatList
+        data={cases}
+        renderItem={({ item }) => (
+          <ListItem
+            avatar={<Avatar type="case" />}
+            title={item.name}
+            key={item.id}
+            subtitle={
+              <Subtitle
+                lastSeenLocName={`${item.lastKnownLoc.city}, ${item.lastKnownLoc
+                  .country}`}
+                type="case"
+              />
+            }
+            chevronColor="#4BA2AC"
+            onPress={() => onPressCase(item.id)}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+    );
+  } else {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: '#a3a3a3' }}>
+          You haven't saved any cases yet
+        </Text>
+      </View>
+    );
+  }
+};
+
+const renderEvents = (events, onPressEvent) => {
+  if (events.length) {
+    return (
+      <FlatList
+        data={events}
+        renderItem={({ item }) => (
+          <ListItem
+            avatar={<Avatar type="event" />}
+            title={item.name}
+            key={item.id}
+            subtitle={
+              <Subtitle
+                eventLocation={`${item.loc.city}, ${item.loc.country}`}
+                eventTime={`${item.date}, ${item.time}`}
+                type="event"
+              />
+            }
+            chevronColor="#4BA2AC"
+            onPress={() => onPressEvent(item.id)}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
+    );
+  } else {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: '#a3a3a3' }}>
+          You haven't saved any events yet
+        </Text>
+      </View>
+    );
+  }
+};
+
 const SavedScreen = ({
   onPressButtonGroup,
   currentTab,
@@ -95,50 +160,15 @@ const SavedScreen = ({
       </View>
 
       <View style={styles.savedDataContainer}>
-        <List containerStyle={styles.savedDataList}>
-          {currentTab === 0 ? (
-            <FlatList
-              data={objToArrIncludingKey(cases)}
-              renderItem={({ item }) => (
-                <ListItem
-                  avatar={<Avatar type="case" />}
-                  title={item.name}
-                  key={item.id}
-                  subtitle={
-                    <Subtitle
-                      lastSeenLocName={`${item.lastKnownLoc.city}, ${item.lastKnownLoc.country}`}
-                      type="case"
-                    />
-                  }
-                  chevronColor="#4BA2AC"
-                  onPress={() => onPressCase(item.id)}
-                />
-              )}
-              keyExtractor={item => item.id}
-            />
-          ) : (
-            <FlatList
-              data={objToArrIncludingKey(events)}
-              renderItem={({ item }) => (
-                <ListItem
-                  avatar={<Avatar type="event" />}
-                  title={item.name}
-                  key={item.id}
-                  subtitle={
-                    <Subtitle
-                      eventLocation={`${item.loc.city}, ${item.loc.country}`}
-                      eventTime={`${item.date}, ${item.time}`}
-                      type="event"
-                    />
-                  }
-                  chevronColor="#4BA2AC"
-                  onPress={() => onPressEvent(item.id)}
-                />
-              )}
-              keyExtractor={item => item.id}
-            />
-          )}
-        </List>
+        {currentTab === 0 ? (
+          <List containerStyle={styles.savedDataList}>
+            {renderCases(cases, onPressCase)}
+          </List>
+        ) : (
+          <List containerStyle={styles.savedDataList}>
+            {renderEvents(events, onPressEvent)}
+          </List>
+        )}
       </View>
     </View>
   );
@@ -149,8 +179,8 @@ SavedScreen.propTypes = {
   onPressButtonGroup: PropTypes.func,
   onPressCase: PropTypes.func,
   onPressEvent: PropTypes.func,
-  cases: PropTypes.object,
-  events: PropTypes.object
+  cases: PropTypes.array,
+  events: PropTypes.array
 };
 
 SavedScreen.defaultProps = {
@@ -158,8 +188,8 @@ SavedScreen.defaultProps = {
   onPressButtonGroup: () => {},
   onPressCase: () => {},
   onPressEvent: () => {},
-  cases: {},
-  events: {}
+  cases: [],
+  events: []
 };
 
 const styles = StyleSheet.create({
