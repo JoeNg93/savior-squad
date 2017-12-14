@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import CaseCard from '../components/CaseCard';
 import GridView from 'react-native-super-grid';
+import PropTypes from 'prop-types';
+import EventCard from '../components/EventCard';
+import _ from 'lodash';
 
 const ENTRIES1 = [
   {
@@ -36,15 +39,32 @@ const ENTRIES1 = [
   }
 ];
 
-const GridViewScreen = ({}) => {
+const GridViewScreen = ({ data, onClickEventCard, onClickCaseCard }) => {
   return (
     <GridView
-      itemDimension={130}
-      items={ENTRIES1}
+      itemDimension={225}
+      items={data}
       style={styles.gridView}
-      renderItem={item => <CaseCard caseInfo={{}} />}
+      renderItem={item =>
+        item.age ? (
+          <CaseCard caseInfo={item} onTapCard={onClickCaseCard} />
+        ) : (
+          <EventCard eventInfo={item} onTapCard={onClickEventCard}/>
+        )}
     />
   );
+};
+
+GridView.propTypes = {
+  data: PropTypes.array,
+  onClickEventCard: PropTypes.func,
+  onClickCaseCard: PropTypes.func
+};
+
+GridView.defaultProps = {
+  data: [],
+  onClickEventCard: () => {},
+  onClickCaseCard: () => {}
 };
 
 const styles = StyleSheet.create({
@@ -54,7 +74,7 @@ const styles = StyleSheet.create({
   },
   gridView: {
     paddingTop: 25,
-    flex: 1
+    flex: 2
   },
   containerSmall: {
     flexDirection: 'row',
