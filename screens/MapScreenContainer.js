@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import LoadingScreen from '../components/LoadingScreen';
 import { objToArrIncludingKey } from '../utils/index';
 import _ from 'lodash';
+import { setSelectedEventId } from '../actions/events';
+import { setSelectedCaseId } from '../actions/cases';
 
 class MapScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -36,6 +38,18 @@ class MapScreenContainer extends Component {
 
   extractCoords = arr => arr.map(e => _.find(e, 'coord').coord);
 
+  onClickCaseCard = caseInfo => {
+    const { setSelectedCaseId, navigation } = this.props;
+    setSelectedCaseId(caseInfo.id);
+    navigation.navigate('caseInfo', { tabBarLabel: 'Map' });
+  };
+
+  onClickEventCard = eventInfo => {
+    const { setSelectedEventId, navigation } = this.props;
+    setSelectedEventId(eventInfo.id);
+    navigation.navigate('eventInfo', { tabBarLabel: 'Map' });
+  };
+
   render() {
     const { allCases, allEvents, currentUser } = this.props;
     if (_.size(allCases) && _.size(allEvents)) {
@@ -49,8 +63,17 @@ class MapScreenContainer extends Component {
       return (
         <MapScreen
           data={nearestThings}
-          initialRegion={{...this.markers[1], latitudeDelta: 0.05, longitudeDelta: 0.05}}
-          renderItem={({ item }) => item.age ? <CaseCard caseInfo={item} /> : <EventCard eventInfo={item}/>}
+          initialRegion={{
+            ...this.markers[1],
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05
+          }}
+          renderItem={({ item }) =>
+            item.age ? (
+              <CaseCard caseInfo={item} onTapCard={this.onClickCaseCard} />
+            ) : (
+              <EventCard eventInfo={item} onTapCard={this.onClickEventCard}/>
+            )}
           onLoadCarousel={carousel => (this.carousel = carousel)}
           onLoadMap={map => (this.map = map)}
           onSlideToCard={this.onSlideToCard}
@@ -70,4 +93,7 @@ const mapStateToProps = state => ({
   currentUser: state.auth.currentUser
 });
 
-export default connect(mapStateToProps, {})(MapScreenContainer);
+export default connect(mapStateToProps, {
+  setSelectedCaseId,
+  setSelectedEventId
+})(MapScreenContainer);
