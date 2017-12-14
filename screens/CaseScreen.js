@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TextInput,
   FlatList,
   Dimensions,
   Image,
@@ -15,6 +14,10 @@ import { Carousel } from 'nachos-ui';
 import { Button, Icon, List, ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { objToArrIncludingKey } from '../utils/index';
+import Modal from 'react-native-modalbox';
+import CaseInfo from '../components/CaseInfo';
+import ContactScreenContainer from './ContactScreenContainer';
+import CreateEventScreenContainer from './CreateEventScreenContainer';
 
 const { width, height } = Dimensions.get('window');
 
@@ -73,7 +76,16 @@ const CaseScreen = ({
   caseInfo,
   onGetMarkerRef,
   onMapRegionChangeComplete,
-  onPressEventItem
+  onPressEventItem,
+  onClickMoreInfo,
+  getMoreInfoModalRef,
+  getCreateEventModalRef,
+  getContactOwnerModalRef,
+  onClickCloseMoreInfo,
+  onClickContactOwner,
+  onClickCloseContactOwner,
+  onClickCreateEvent,
+  onClickCloseCreateEvent
 }) => {
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -112,10 +124,10 @@ const CaseScreen = ({
                 <View style={styles.InfoTitleText}>
                   <Text
                     style={{
-                      fontSize: 40,
-                      color: 'black',
+                      fontSize: 35,
+                      color: '#4BA2AC',
                       textAlign: 'center',
-                      fontWeight: '300'
+                      fontWeight: '500'
                     }}
                   >
                     {caseInfo.name}
@@ -124,7 +136,10 @@ const CaseScreen = ({
                 <View style={styles.InfoBodyTextView}>
                   <Text style={styles.InfoBodyTextStyle}>
                     {caseInfo.context}
-                    <TouchableOpacity style={styles.MoreInfoLink}>
+                    <TouchableOpacity
+                      style={styles.MoreInfoLink}
+                      onPress={onClickMoreInfo}
+                    >
                       <Text style={{ color: 'blue', fontSize: 14 }}>
                         {' '}
                         More info
@@ -144,6 +159,7 @@ const CaseScreen = ({
                     color="#4BA2AC"
                     borderRadius={3}
                     underlayColor="#4BA2AC"
+                    onPress={onClickContactOwner}
                   />
                 </View>
                 <View style={styles.CreateEventView}>
@@ -155,6 +171,7 @@ const CaseScreen = ({
                     color="#4BA2AC"
                     borderRadius={3}
                     underlayColor="#4BA2AC"
+                    onPress={onClickCreateEvent}
                   />
                 </View>
               </View>
@@ -211,6 +228,22 @@ const CaseScreen = ({
           </View>
         </View>
       </View>
+      <Modal ref={getMoreInfoModalRef} coverScreen={true}>
+        <CaseInfo
+          caseInfo={caseInfo}
+          onClickCloseMoreInfo={onClickCloseMoreInfo}
+        />
+      </Modal>
+      <Modal ref={getContactOwnerModalRef} coverScreen={true}>
+        <ContactScreenContainer
+          onClickCloseContactOwner={onClickCloseContactOwner}
+        />
+      </Modal>
+      <Modal ref={getCreateEventModalRef} coverScreen={true}>
+        <CreateEventScreenContainer
+          onClickCloseCreateEvent={onClickCloseCreateEvent}
+        />
+      </Modal>
     </ScrollView>
   );
 };
@@ -219,14 +252,32 @@ CaseScreen.propTypes = {
   caseInfo: PropTypes.object,
   onGetMarkerRef: PropTypes.func,
   onMapRegionChangeComplete: PropTypes.func,
-  onPressEventItem: PropTypes.func
+  onPressEventItem: PropTypes.func,
+  onClickMoreInfo: PropTypes.func,
+  onClickCloseMoreInfo: PropTypes.func,
+  getMoreInfoModalRef: PropTypes.func,
+  getCreateEventModalRef: PropTypes.func,
+  getContactOwnerModalRef: PropTypes.func,
+  onClickContactOwner: PropTypes.func,
+  onClickCloseContactOwner: PropTypes.func,
+  onClickCreateEvent: PropTypes.func,
+  onClickCloseCreateEvent: PropTypes.func
 };
 
 CaseScreen.defaultProps = {
   caseInfo: {},
   onGetMarkerRef: () => {},
   onMapRegionChangeComplete: () => {},
-  onPressEventItem: () => {}
+  onPressEventItem: () => {},
+  onClickMoreInfo: () => {},
+  onClickCloseMoreInfo: () => {},
+  getMoreInfoModalRef: () => {},
+  getCreateEventModalRef: () => {},
+  getContactOwnerModalRef: () => {},
+  onClickContactOwner: () => {},
+  onClickCloseContactOwner: () => {},
+  onClickCreateEvent: () => {},
+  onClickCloseCreateEvent: () => {}
 };
 
 const styles = StyleSheet.create({

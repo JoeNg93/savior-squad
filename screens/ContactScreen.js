@@ -1,28 +1,42 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Input } from 'nachos-ui';
-import { Button } from 'react-native-elements';
+import { Button, Header, Icon } from 'react-native-elements';
 import { wp, hp } from '../utils';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ContactScreen = ({
-  userInfo,
+  caseInfo,
   subjectValue,
   messageValue,
   onChangeSubjectInput,
   onChangeMessageInput,
-  onClickSubmit
+  onClickSubmit,
+  onClickCloseContactOwner
 }) => {
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ marginTop: 30 }}
-      resetScrollToCoords={{ x: 0, y: 0 }}
-    >
+    <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
+      <Header
+        leftComponent={
+          <TouchableOpacity onPress={onClickCloseContactOwner}>
+            <Icon name="close" color="white" />
+          </TouchableOpacity>
+        }
+        centerComponent={{
+          text: 'Contact',
+          style: { fontSize: 16, color: '#fff' }
+        }}
+        backgroundColor="#4BA2AC"
+      />
+
       <View style={styles.headerContainerStyle}>
-        <Text style={styles.headerStyle}>Contact</Text>
-        <Text style={styles.subHeaderStyle}>about Donald Duck</Text>
+        <Text style={{ color: '#999999', fontSize: 20 }}>About </Text>
+        <Text style={{ color: '#4BA2AC', fontWeight: 'bold', fontSize: 20 }}>
+          {caseInfo.name}
+        </Text>
       </View>
+
       <View style={styles.formStyle}>
         <View style={styles.inputContainerStyle}>
           <Input
@@ -42,7 +56,9 @@ const ContactScreen = ({
           />
           <View style={styles.inputContainerStyle}>
             <Text style={{ fontSize: 14, fontStyle: 'italic' }}>
-              Note! Your message will be checked by moderators first. Inappropriate content such as threats or spam will be dealt with accordingly.
+              Note! Your message will be checked by moderators first.
+              Inappropriate content such as threats or spam will be dealt with
+              accordingly.
             </Text>
           </View>
           <View
@@ -71,11 +87,14 @@ ContactScreen.propTypes = {
   messageValue: PropTypes.string.isRequired,
   onChangeSubjectInput: PropTypes.func.isRequired,
   onChangeMessageInput: PropTypes.func.isRequired,
-  onClickSubmit: PropTypes.func
+  onClickSubmit: PropTypes.func,
+  caseInfo: PropTypes.object,
+  onClickCloseContactOwner: PropTypes.func
 };
 
 ContactScreen.defaultProps = {
-  onClickSubmit: () => {}
+  onClickSubmit: () => {},
+  onClickCloseContactOwner: () => {}
 };
 
 const styles = StyleSheet.create({
@@ -89,7 +108,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
   formStyle: {
-    marginTop: 22,
+    marginTop: hp(2),
     paddingLeft: 16,
     paddingRight: 16
   },
@@ -99,7 +118,9 @@ const styles = StyleSheet.create({
   },
   headerContainerStyle: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: hp(3)
   }
 });
 

@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import ContactScreen from './ContactScreen';
 import { Alert } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class ContactScreenContainer extends Component {
   state = {
     subjectValue: '',
     messageValue: ''
+  };
+
+  static propTypes = {
+    onClickCloseContactOwner: PropTypes.func
+  };
+
+  static defaultProps = {
+    onClickCloseContactOwner: () => {}
   };
 
   onChangeSubjectInput = subjectValue => this.setState({ subjectValue });
@@ -17,6 +27,7 @@ class ContactScreenContainer extends Component {
   };
 
   render() {
+    const { onClickCloseContactOwner, allCases, selectedCaseId } = this.props;
     return (
       <ContactScreen
         subjectValue={this.state.subjectValue}
@@ -24,9 +35,16 @@ class ContactScreenContainer extends Component {
         messageValue={this.state.messageValue}
         onChangeMessageInput={this.onChangeMessageInput}
         onClickSubmit={this.onClickSubmit}
+        onClickCloseContactOwner={onClickCloseContactOwner}
+        caseInfo={allCases[selectedCaseId]}
       />
     );
   }
 }
 
-export default ContactScreenContainer;
+const mapStateToProps = state => ({
+  allCases: state.cases.allCases,
+  selectedCaseId: state.cases.selectedCaseId
+});
+
+export default connect(mapStateToProps, {})(ContactScreenContainer);

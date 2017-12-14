@@ -6,7 +6,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import { setSelectedEventId } from '../actions/events';
 import { NavigationActions } from 'react-navigation';
 import { getIconName } from '../utils/index';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity, Alert, Share } from 'react-native';
 import { saveCase, unsaveCase } from '../actions/cases';
 
 class CaseScreenContainer extends Component {
@@ -54,7 +54,17 @@ class CaseScreenContainer extends Component {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{ marginRight: 10 }}>
+        <TouchableOpacity
+          style={{ marginRight: 10 }}
+          onPress={() => {
+            const { caseInfo } = navigation.state.params;
+            const { lastKnownLoc, name, id } = caseInfo;
+            Share.share({
+              title: `Looking for ${name}`,
+              message: `Hey, we are looking for ${caseInfo.name}, his last known location is: ${lastKnownLoc.streetAddress}, ${lastKnownLoc.postalCode} ${lastKnownLoc.city}, ${lastKnownLoc.country}. Join us at: https://www.savior-squad.com/cases/${id}`
+            });
+          }}
+        >
           <Icon
             type="font-awesome"
             name="share"
@@ -85,12 +95,14 @@ class CaseScreenContainer extends Component {
       navigation,
       saveCase,
       unsaveCase,
-      currentUser
+      currentUser,
+      allCases
     } = this.props;
     navigation.setParams({
       saveCase: () => saveCase(selectedCaseId),
       unsaveCase: () => unsaveCase(selectedCaseId),
-      caseIsSaved: !!(currentUser.cases && currentUser.cases[selectedCaseId])
+      caseIsSaved: !!(currentUser.cases && currentUser.cases[selectedCaseId]),
+      caseInfo: { ...allCases[selectedCaseId], id: selectedCaseId }
     });
   }
 
@@ -102,6 +114,18 @@ class CaseScreenContainer extends Component {
     });
   };
 
+  onClickMoreInfo = () => this.moreInfoModal.open();
+
+  onClickCloseMoreInfo = () => this.moreInfoModal.close();
+
+  onClickContactOwner = () => this.contactOwnerModal.open();
+
+  onClickCloseContactOwner = () => this.contactOwnerModal.close();
+
+  onClickCreateEvent = () => this.createEventModal.open();
+
+  onClickCloseCreateEvent = () => this.createEventModal.close();
+
   render() {
     const { selectedCaseId, allCases } = this.props;
     if (selectedCaseId) {
@@ -111,6 +135,21 @@ class CaseScreenContainer extends Component {
           onGetMarkerRef={ref => (this.markerRef = ref)}
           onMapRegionChangeComplete={() => this.markerRef.showCallout()}
           onPressEventItem={this.onPressEventItem}
+          onClickMoreInfo={this.onClickMoreInfo}
+          getMoreInfoModalRef={ref => {
+            this.moreInfoModal = ref;
+          }}
+          onClickCloseMoreInfo={this.onClickCloseMoreInfo}
+          getContactOwnerModalRef={ref => {
+            this.contactOwnerModal = ref;
+          }}
+          getCreateEventModalRef={ref => {
+            this.createEventModal = ref;
+          }}
+          onClickContactOwner={this.onClickContactOwner}
+          onClickCloseContactOwner={this.onClickCloseContactOwner}
+          onClickCreateEvent={this.onClickCreateEvent}
+          onClickCloseCreateEvent={this.onClickCloseCreateEvent}
         />
       );
     } else {
