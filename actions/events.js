@@ -58,7 +58,7 @@ export const leaveEvent = eventId => async (dispatch, getState) => {
     await firebase
       .database()
       .ref(`/events/${eventId}/participants/${currentUser.uid}`)
-      .remove();
+      .set(null);
     dispatch({ type: LEAVE_EVENT_SUCCESS });
     return { status: 'success' };
   } catch (err) {
@@ -95,7 +95,7 @@ export const unsaveEvent = eventId => async (dispatch, getState) => {
   const state = getState();
   const { currentUser } = state.auth;
   try {
-    await firebase.database().ref(`/users/${currentUser.uid}/events/${eventId}`).remove();
+    await firebase.database().ref(`/users/${currentUser.uid}/events/${eventId}`).set(null);
     dispatch({ type: UNSAVE_EVENT_SUCCESS });
     return { status: 'success' };
   } catch (err) {

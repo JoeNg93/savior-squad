@@ -81,12 +81,12 @@ export const stopListeningToLocationChange = eventId => async (
     await firebase
       .database()
       .ref(`/events/${eventId}/participants/${userId}/trackingLocs`)
-      .remove();
+      .set(null);
 
     await firebase
       .database()
       .ref(`/events/${eventId}/participants/${userId}/location`)
-      .remove();
+      .set(null);
     dispatch({ type: STOP_LOCATION_TRACKING_SUCCESS });
     return { status: 'success' };
   } else {

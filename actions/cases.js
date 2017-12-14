@@ -55,7 +55,7 @@ export const unsaveCase = caseId => async (dispatch, getState) => {
     await firebase
       .database()
       .ref(`/users/${currentUser.uid}/cases/${caseId}`)
-      .remove();
+      .set(null);
     dispatch({ type: UNSAVE_CASE_SUCCESS });
     return { status: 'success' };
   } catch (err) {

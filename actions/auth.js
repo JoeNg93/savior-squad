@@ -51,7 +51,7 @@ export const login = ({ email, password }) => async dispatch => {
 
     await createAndSaveCredential({ email, password });
     dispatch({ type: LOGIN_SUCCESS, payload: user });
-    await getUser({ userUID: user.uid })(dispatch);
+    getUser({ userUID: user.uid })(dispatch);
     return { status: 'success' };
   } catch (err) {
     dispatch({
