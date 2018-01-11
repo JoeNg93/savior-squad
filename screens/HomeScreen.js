@@ -13,6 +13,8 @@ import PropTypes from 'prop-types';
 import EventCard from '../components/EventCard';
 import { objToArrIncludingKey } from '../utils/index';
 import { wp, hp } from '../utils/index';
+import CreateNewCaseScreenContainer from './CreateNewCaseScreenContainer';
+import Modal from 'react-native-modalbox';
 
 const HomeScreen = ({
   cases,
@@ -22,7 +24,9 @@ const HomeScreen = ({
   onClickSeeAllEvents,
   onClickSeeAllNearYou,
   onClickEventCard,
-  onClickCaseCard
+  onClickCaseCard,
+  getCreateNewCaseModalRef,
+  onClickCloseCreateNewCase
 }) => {
   // TODO: Change from SearchBar to GoogleAutoCompleteBar
   return (
@@ -108,6 +112,11 @@ const HomeScreen = ({
           </View>
         </View>
       </ScrollView>
+      <Modal ref={getCreateNewCaseModalRef} coverScreen={true}>
+        <CreateNewCaseScreenContainer
+          onClickCloseCreateNewCase={onClickCloseCreateNewCase}
+        />
+      </Modal>
     </View>
   );
 };
@@ -120,7 +129,9 @@ HomeScreen.propTypes = {
   onClickSeeAllEvents: PropTypes.func,
   onClickSeeAllNearYou: PropTypes.func,
   onClickEventCard: PropTypes.func,
-  onClickCaseCard: PropTypes.func
+  onClickCaseCard: PropTypes.func,
+  getCreateNewCaseModalRef: PropTypes.func,
+  onClickCloseCreateNewCase: PropTypes.func
 };
 
 HomeScreen.defaultProps = {
@@ -131,7 +142,9 @@ HomeScreen.defaultProps = {
   onClickSeeAllEvents: () => {},
   onClickSeeAllNearYou: () => {},
   onClickEventCard: () => {},
-  onClickCaseCard: () => {}
+  onClickCaseCard: () => {},
+  getCreateNewCaseModalRef: () => {},
+  onClickCloseCreateNewCase: () => {}
 };
 
 const styles = StyleSheet.create({
@@ -154,7 +167,7 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: '#2f2135'
   },
   sectionContentContainer: {

@@ -10,6 +10,7 @@
     "moment": "^2.19.3",
     "nachos-ui": "^0.1.2",
     "prop-types": "^15.6.0",
+    "randomcolor": "^0.5.3",
     "react": "16.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-23.0.0.tar.gz",
     "react-native-app-intro-slider": "^0.2.2",

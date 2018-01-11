@@ -1,5 +1,6 @@
 import { Location } from 'expo';
 import firebase from 'firebase';
+import randomColor from 'randomcolor';
 
 export const GET_CURRENT_LOCATION_PENDING = 'GET_CURRENT_LOCATION_PENDING';
 export const GET_CURRENT_LOCATION_SUCCESS = 'GET_CURRENT_LOCATION_SUCCESS';
@@ -39,6 +40,10 @@ export const listenToLocationChange = eventId => async (dispatch, getState) => {
   const state = getState();
   const { currentUser } = state.auth;
   const userId = currentUser.uid;
+  await firebase
+    .database()
+    .ref(`/events/${eventId}/participants/${userId}`)
+    .update({ markerColor: randomColor() });
   const locationListenerRef = await Location.watchPositionAsync(
     { enableHighAccuracy: true, distanceInterval: 2 },
     async ({ coords }) => {
@@ -53,10 +58,10 @@ export const listenToLocationChange = eventId => async (dispatch, getState) => {
         .ref(`/events/${eventId}/participants/${userId}/location`)
         .set({ latitude, longitude });
 
-      // await firebase
-      //   .database()
-      //   .ref(`/events/${eventId}/participants/${userId}/trackingLocs`)
-      //   .push({ latitude, longitude });
+      await firebase
+        .database()
+        .ref(`/events/${eventId}/participants/${userId}/trackingLocs`)
+        .push({ latitude, longitude });
     }
   );
   dispatch({

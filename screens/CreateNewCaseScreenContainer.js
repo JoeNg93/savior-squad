@@ -7,6 +7,7 @@ import {
   TextInput
 } from 'react-native';
 import CreateNewCaseScreen from './CreateNewCaseScreen';
+import PropTypes from 'prop-types';
 
 class CreateNewCaseScreenContainer extends Component {
 
@@ -15,6 +16,10 @@ class CreateNewCaseScreenContainer extends Component {
     lastName: '',
     gender: '',
     h_color: '',
+  };
+
+  static propTypes = {
+    onClickCloseCreateNewCase: PropTypes.func
   };
 
   onChangeFirstNameInput = subjectValue => this.setState({ subjectValue });
@@ -33,6 +38,7 @@ class CreateNewCaseScreenContainer extends Component {
         lastName={this.state.lastNameValue}
         onChangeLastNameInput={this.onChangeLastNameInput}
         onClickSubmit={this.onClickSubmit}
+        onClickCloseCreateNewCase={this.props.onClickCloseCreateNewCase}
       />
     );
   }

@@ -179,8 +179,8 @@ class EventInfoScreenContainer extends Component {
 
   render() {
     const { currentUser, selectedEventId, allEvents } = this.props;
-    const userId = currentUser.uid;
-    if (selectedEventId) {
+    if (selectedEventId && currentUser) {
+      const userId = currentUser.uid;
       return (
         <EventInfoScreen
           event={{ ...allEvents[selectedEventId], id: selectedEventId }}

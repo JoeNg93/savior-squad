@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,52 +9,58 @@ import {
   ScrollView,
   TextInput
 } from 'react-native';
-import { SocialIcon, Avatar, CheckBox  } from 'react-native-elements';
+import {
+  SocialIcon,
+  Avatar,
+  CheckBox,
+  Header,
+  Icon
+} from 'react-native-elements';
 import LoginForm from '../components/LoginForm';
 import PropTypes from 'prop-types';
 import { wp, hp } from '../utils/index';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Dropdown } from 'react-native-material-dropdown';
 
 class DropdownGender extends Component {
   render() {
-    let data = [{
-      value: 'Male',
-    }, {
-      value: 'Female',
-    }];
+    let data = [
+      {
+        value: 'Male'
+      },
+      {
+        value: 'Female'
+      }
+    ];
 
-    return (
-      <Dropdown
-        data={data}
-        label='Gender'
-      />
-    );
+    return <Dropdown data={data} label="Gender" />;
   }
 }
 
 class DropdownHairColor extends Component {
   render() {
-    let data = [{
-      value: 'Black',
-    }, {
-      value: 'Brown',
-    }, {
-      value: 'Blonde',
-    }, {
-      value: 'Grey',
-    }, {
-      value: 'Red',
-    }, {
-      value: 'Other',
-    }];
+    let data = [
+      {
+        value: 'Black'
+      },
+      {
+        value: 'Brown'
+      },
+      {
+        value: 'Blonde'
+      },
+      {
+        value: 'Grey'
+      },
+      {
+        value: 'Red'
+      },
+      {
+        value: 'Other'
+      }
+    ];
 
-    return (
-      <Dropdown
-        data={data}
-        label='Hair Color'
-      />
-    );
+    return <Dropdown data={data} label="Hair Color" />;
   }
 }
 
@@ -65,85 +71,98 @@ const CreateNewCaseScreen = ({
   onChangePasswordField,
   onChangeEmailField,
   onPressSignup,
-  isLoggingIn
+  isLoggingIn,
+  onClickCloseCreateNewCase
 }) => {
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-    <ScrollView>
-      <View style={styles.containerHorizontal}>
-        <View style={styles.logoContainer}>
-          <Avatar style={styles.avatar}
-            rounded
-            title="ZK"
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-          />
+    <KeyboardAwareScrollView
+      // contentContainerStyle={styles.container}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+    >
+      <Header
+        leftComponent={
+          <TouchableOpacity onPress={onClickCloseCreateNewCase}>
+            <Icon name="close" color="white" />
+          </TouchableOpacity>
+        }
+        centerComponent={{
+          text: 'Contact',
+          style: { fontSize: 16, color: '#fff' }
+        }}
+        backgroundColor="#4BA2AC"
+      />
+
+      <ScrollView style={styles.container}>
+        <View style={styles.containerHorizontal}>
+          <View style={styles.logoContainer}>
+            <Avatar
+              style={styles.avatar}
+              rounded
+              title="ZK"
+              onPress={() => console.log('Works!')}
+              activeOpacity={0.7}
+            />
+          </View>
+          <View style={styles.container}>
+            <TextInput
+              style={styles.input}
+              placeholder="First name"
+              placeholderTextColor="rgba(0, 0, 0, 0.5)"
+              value={email}
+              onChangeText={onChangeEmailField}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Second name"
+              placeholderTextColor="rgba(0, 0, 0, 0.5)"
+              value={password}
+              onChangeText={onChangePasswordField}
+            />
+          </View>
         </View>
         <View style={styles.container}>
+          <DropdownGender containerStyle={styles.dropdownContainerStyle} />
+          <DropdownHairColor containerStyle={styles.dropdownContainerStyle} />
+        </View>
+        <View style={[styles.container, { marginTop: hp(2) }]}>
           <TextInput
             style={styles.input}
-            placeholder="First name"
+            placeholder="Age"
             placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            value={email}
-            onChangeText={onChangeEmailField}
+            value={password}
+            onChangeText={onChangePasswordField}
           />
           <TextInput
             style={styles.input}
-            placeholder="Second name"
+            placeholder="Height (cm)"
             placeholderTextColor="rgba(0, 0, 0, 0.5)"
-            secureTextEntry
+            value={password}
+            onChangeText={onChangePasswordField}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Weight (kg)"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
             value={password}
             onChangeText={onChangePasswordField}
           />
         </View>
-      </View>
-      <View style={styles.container}>
-        <DropdownGender containerStyle={styles.dropdownContainerStyle}/>
-        <DropdownHairColor containerStyle={styles.dropdownContainerStyle}/>
-      </View>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="Age"
-          placeholderTextColor="rgba(0, 0, 0, 0.5)"
-          secureTextEntry
-          value={password}
-          onChangeText={onChangePasswordField}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Height (cm)"
-          placeholderTextColor="rgba(0, 0, 0, 0.5)"
-          secureTextEntry
-          value={password}
-          onChangeText={onChangePasswordField}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Weight (kg)"
-          placeholderTextColor="rgba(0, 0, 0, 0.5)"
-          secureTextEntry
-          value={password}
-          onChangeText={onChangePasswordField}
-        />
-      </View>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputComments}
-          placeholder="Context and comments"
-          placeholderTextColor="rgba(0, 0, 0, 0.5)"
-          secureTextEntry
-          multiline
-          numberOfLines = {4}
-          value={password}
-          onChangeText={onChangePasswordField}
-        />
-      </View>
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>Confirm</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.inputComments}
+            placeholder="Context and comments"
+            placeholderTextColor="rgba(0, 0, 0, 0.5)"
+            multiline
+            numberOfLines={4}
+            value={password}
+            onChangeText={onChangePasswordField}
+          />
+        </View>
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </KeyboardAwareScrollView>
   );
@@ -156,7 +175,8 @@ CreateNewCaseScreen.propTypes = {
   onChangePasswordField: PropTypes.func,
   onPressLogin: PropTypes.func,
   onPressSignup: PropTypes.func,
-  isLoggingIn: PropTypes.bool
+  isLoggingIn: PropTypes.bool,
+  onClickCloseCreateNewCase: PropTypes.func
 };
 
 CreateNewCaseScreen.defaultProps = {
@@ -164,6 +184,7 @@ CreateNewCaseScreen.defaultProps = {
   onChangePasswordField: () => {},
   onPressLogin: () => {},
   onPressSignup: () => {},
+  onClickCloseCreateNewCase: () => {},
   isLoggingIn: false
 };
 
@@ -172,7 +193,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingLeft: wp(6),
-    paddingRight: wp(6),
+    paddingRight: wp(6)
   },
   logoContainer: {
     flex: 0.25,
@@ -223,7 +244,7 @@ const styles = StyleSheet.create({
     // flex: 1.25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: hp(10),
+    marginBottom: hp(10)
   },
   containerHorizontal: {
     flex: 1,
@@ -233,8 +254,8 @@ const styles = StyleSheet.create({
     paddingTop: hp(10)
   },
   buttonContainer: {
-    backgroundColor: 'rgba(80,201,186, 0.6)',
-    paddingVertical: 15,
+    backgroundColor: '#4BA2AC',
+    paddingVertical: 15
   },
   buttonText: {
     textAlign: 'center',
@@ -245,11 +266,11 @@ const styles = StyleSheet.create({
     paddingLeft: wp(6),
     paddingRight: wp(6),
     width: wp(100),
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)'
   },
   dropdownText: {
-    color: 'rgba(0, 0, 0, 0.5)',
-  },
+    color: 'rgba(0, 0, 0, 0.5)'
+  }
 });
 
 export default CreateNewCaseScreen;

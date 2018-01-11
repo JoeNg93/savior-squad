@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapView } from 'expo';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -29,9 +29,39 @@ const LocationTrackingScreen = ({
           if (userInfo.location) {
             return (
               <MapView.Marker coordinate={userInfo.location} key={userInfo.uid}>
-                <Icon type="material-community" name="account-location" />
+                {/*<Icon type="material-community" name="account-location" />*/}
+                <Text style={{ color: userInfo.markerColor }}>
+                  {userInfo.name}
+                </Text>
+                <Icon
+                  type="font-awesome"
+                  size={20}
+                  name="user-circle-o"
+                  color={userInfo.markerColor}
+                />
               </MapView.Marker>
             );
+          }
+          return null;
+        })}
+        {_.flatMap(users, userInfo => {
+          if (userInfo.trackingLocs) {
+            return _.map(userInfo.trackingLocs, ({ latitude, longitude }) => {
+              return (
+                <MapView.Marker
+                  coordinate={{ latitude, longitude }}
+                  key={`${userInfo.uid},${latitude},${longitude}`}
+                >
+                  {/*<Icon type="material-community" name="account-location" />*/}
+                  <Icon
+                    type="font-awesome"
+                    size={10}
+                    name="dot-circle-o"
+                    color={userInfo.markerColor}
+                  />
+                </MapView.Marker>
+              );
+            });
           }
           return null;
         })}

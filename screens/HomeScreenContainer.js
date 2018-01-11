@@ -22,11 +22,15 @@ class HomeScreenContainer extends Component {
       <Icon name="home" type="font-awesome" color={tintColor} />
     ),
     headerRight: (
-      <TouchableOpacity style={{ marginRight: 10 }}>
-        <Icon
-          name="person-add"
-          iconStyle={{ color: 'white' }}
-        />
+      <TouchableOpacity
+        style={{ marginRight: 10 }}
+        onPress={() => {
+          if (navigation.state.params) {
+            navigation.state.params.onClickCreateNewCase();
+          }
+        }}
+      >
+        <Icon name="person-add" iconStyle={{ color: 'white' }} />
       </TouchableOpacity>
     ),
     tabBarLabel: 'Home'
@@ -36,6 +40,12 @@ class HomeScreenContainer extends Component {
     this.props.getAllCases();
     this.props.getAllEvents();
     this.props.getCurrentLocation();
+  };
+
+  componentDidMount = () => {
+    this.props.navigation.setParams({
+      onClickCreateNewCase: this.onClickCreateNewCase
+    });
   };
 
   onClickSeeAllCases = () => {
@@ -63,9 +73,22 @@ class HomeScreenContainer extends Component {
     this.props.navigation.navigate('eventInfo', { tabBarLabel: 'Home' });
   };
 
+  onClickCreateNewCase = () => {
+    this.createNewCaseModal.open();
+  };
+
+  onClickCloseCreateNewCase = () => {
+    this.createNewCaseModal.close();
+  };
+
   render() {
     const { allCases, allEvents, currentUser } = this.props;
-    if (_.size(allCases) && _.size(allEvents) && currentUser.location) {
+    if (
+      _.size(allCases) &&
+      _.size(allEvents) &&
+      currentUser &&
+      currentUser.location
+    ) {
       this.casesAsArr = objToArrIncludingKey(allCases);
       this.eventsAsArr = objToArrIncludingKey(allEvents);
       this.nearestThings = _.sortBy(
@@ -85,6 +108,8 @@ class HomeScreenContainer extends Component {
           onClickSeeAllNearYou={this.onClickSeeAllNearYou}
           onClickCaseCard={this.onClickCaseCard}
           onClickEventCard={this.onClickEventCard}
+          getCreateNewCaseModalRef={ref => (this.createNewCaseModal = ref)}
+          onClickCloseCreateNewCase={this.onClickCloseCreateNewCase}
         />
       );
     }
